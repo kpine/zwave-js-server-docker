@@ -1,12 +1,16 @@
 # TODO: replace with slim or alpine
-FROM node:15-buster-slim
+FROM node:15-alpine as base
 
 RUN npm install -g typescript ts-node
 
-ENV DEBIAN_FRONTEND=noninteractive
-RUN apt-get update && apt-get install -y --no-install-recommends \
+FROM base as app
+
+RUN apk add --no-cache --virtual .build-deps \
+      build-base \
       curl \
-      ca-certificates \
+      gcc \
+      linux-headers \
+      python3 \
       unzip
 
 WORKDIR /app
@@ -20,11 +24,7 @@ RUN curl -sSL -O "https://github.com/zwave-js/zwave-js-server/archive/master.zip
 
 RUN npm install
 
-RUN apt-get remove -y \
-      curl \
-      unzip \
- && rm -rf /var/lib/apt/lists/* \
- && (apt-get autoremove -y; apt-get autoclean -y)
+RUN apk del .build-deps
 
 COPY docker-entrypoint.sh /usr/local/bin/
 COPY options.js .
