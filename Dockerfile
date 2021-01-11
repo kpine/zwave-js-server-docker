@@ -13,16 +13,21 @@ RUN apk add --no-cache --virtual .build-deps \
       python3 \
       unzip
 
+
+ARG PROJECT=zwave-js/zwave-js-server
+ARG REVISION=master
+
+WORKDIR /src
+
+RUN curl -sSL -o src.zip "https://github.com/${PROJECT}/archive/${REVISION}.zip" \
+ && unzip -q src.zip \
+ && mkdir /app \
+ && mv zwave-js-server-*/* /app
+
 WORKDIR /app
 
-# TODO: allow revision
-# wget https://github.com/zwave-js/zwave-js-server/archive/{sha}.zip
-RUN curl -sSL -O "https://github.com/zwave-js/zwave-js-server/archive/master.zip" \
- && unzip -q master.zip \
- && mv zwave-js-server-master/* . \
- && rm master.zip
-
-RUN npm install
+RUN rm -rf /src \
+ && npm install
 
 RUN apk del .build-deps
 
@@ -33,7 +38,7 @@ VOLUME /cache
 EXPOSE 3000
 
 # Generate a network key:
-# tr -dc '0-9A-F' </dev/urandom | fold -w 32 | head -n 1
+#   tr -dc '0-9A-F' </dev/urandom | fold -w 32 | head -n 1
 ENV NETWORK_KEY=
 ENV USB_PATH=/dev/zwave
 

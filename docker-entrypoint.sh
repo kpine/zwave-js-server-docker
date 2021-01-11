@@ -15,7 +15,7 @@ if [ "x$1" = "x" ]; then
   set -- --config options.js "$USB_PATH"
 fi
 
-set -- ts-node cli/server.ts "$@"
+set -- ts-node src/bin/server.ts "$@"
 
 echo "Starting server:" "$@"
 exec "$@"
