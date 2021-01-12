@@ -1,4 +1,3 @@
-# TODO: replace with slim or alpine
 FROM node:15-alpine as base
 
 RUN npm install -g typescript ts-node
@@ -12,7 +11,6 @@ RUN apk add --no-cache --virtual .build-deps \
       linux-headers \
       python3 \
       unzip
-
 
 ARG PROJECT=zwave-js/zwave-js-server
 ARG REVISION=master
