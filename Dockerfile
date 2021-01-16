@@ -19,12 +19,18 @@ COPY options.js .
 
 ENV NODE_ENV=production
 
-VOLUME /cache
+VOLUME ["/cache", "/logs"]
 EXPOSE 3000
 
+ENV USB_PATH=/dev/zwave
 # Generate a network key:
 #   tr -dc '0-9A-F' </dev/urandom | fold -w 32 | head -n 1
+# 32-byte hex string
 ENV NETWORK_KEY=
-ENV USB_PATH=/dev/zwave
+# true/false (default false)
+ENV LOGTOFILE=
+# error, warn, info, http, verbose, debug, silly (default debug)
+ENV LOGLEVEL=
+ENV LOGFILENAME=/logs/zwave.log
 
 ENTRYPOINT ["docker-entrypoint.sh"]
