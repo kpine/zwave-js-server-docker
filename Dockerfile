@@ -1,23 +1,27 @@
-FROM node:15-alpine
+FROM node:15-alpine as builder
 
 # Build tools required to install nodeserial, a zwave-js dependency
-RUN apk add --no-cache --virtual .build-deps \
-      build-base \
-      gcc \
+RUN apk add --no-cache \
+      g++ \
       linux-headers \
-      python3
-
-RUN npm install -g --production @zwave-js/server
-
-# Build tools no longer needed
-RUN apk del .build-deps
+      make \
+      python
 
 WORKDIR /app
 
-COPY docker-entrypoint.sh /usr/local/bin/
-COPY options.js .
+RUN npm install --production @zwave-js/server
+
+FROM node:15-alpine as app
+
+WORKDIR /app
 
 ENV NODE_ENV=production
+
+COPY --from=builder /app/ ./
+RUN npm prune --production
+
+COPY docker-entrypoint.sh /usr/local/bin/
+COPY options.js .
 
 VOLUME ["/cache", "/logs"]
 EXPOSE 3000

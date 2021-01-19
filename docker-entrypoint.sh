@@ -15,7 +15,7 @@ if [ "x$1" = "x" ]; then
   set -- --config options.js "$USB_PATH"
 fi
 
-set -- zwave-server "$@"
+set -- ./node_modules/.bin/zwave-server "$@"
 
 echo "Starting server:" "$@"
 exec "$@"
