@@ -1,15 +1,21 @@
 FROM node:15-alpine as builder
 
+# Specify PACKAGE_NAME and PACKAGE_VERSION to install various versions,
+# including from Github.
+ARG PACKAGE_NAME=@zwave-js/server
+ARG PACKAGE_VERSION=
+
 # Build tools required to install nodeserial, a zwave-js dependency
 RUN apk add --no-cache \
       g++ \
+      git \
       linux-headers \
       make \
       python
 
 WORKDIR /app
 
-RUN npm install --production @zwave-js/server
+RUN npm install ${PACKAGE_NAME}${PACKAGE_VERSION}
 
 FROM node:15-alpine as app
 
