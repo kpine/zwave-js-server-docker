@@ -32,6 +32,8 @@ COPY options.js .
 VOLUME ["/cache", "/logs"]
 EXPOSE 3000
 
+ENV PATH=/app/node_modules/.bin:$PATH
+
 ENV USB_PATH=/dev/zwave
 # Generate a network key:
 #   tr -dc '0-9A-F' </dev/urandom | fold -w 32 | head -n 1
