@@ -19,6 +19,9 @@ RUN npm install ${PACKAGE_NAME}${PACKAGE_VERSION}
 
 FROM node:15-alpine as app
 
+RUN apk add --no-cache \
+      jq
+
 WORKDIR /app
 
 ENV NODE_ENV=production
