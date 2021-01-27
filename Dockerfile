@@ -1,4 +1,10 @@
-FROM node:15-alpine as builder
+FROM alpine:3.13 as base
+
+RUN apk add --no-cache \
+      nodejs \
+      npm
+
+FROM base as builder
 
 # Specify PACKAGE_NAME and PACKAGE_VERSION to install various versions,
 # including from Github.
@@ -11,13 +17,13 @@ RUN apk add --no-cache \
       git \
       linux-headers \
       make \
-      python
+      python3
 
 WORKDIR /app
 
 RUN npm install ${PACKAGE_NAME}${PACKAGE_VERSION}
 
-FROM node:15-alpine as app
+FROM base as app
 
 RUN apk add --no-cache \
       jq
