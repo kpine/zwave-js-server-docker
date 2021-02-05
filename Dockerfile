@@ -9,7 +9,7 @@ FROM base as builder
 # Specify PACKAGE_NAME and PACKAGE_VERSION to install various versions,
 # including from Github.
 ARG PACKAGE_NAME=@zwave-js/server
-ARG PACKAGE_VERSION=1.0.0-beta.1
+ARG PACKAGE_VERSION=@1.0.0-beta.4
 
 # Build tools required to install nodeserial, a zwave-js dependency
 RUN apk add --no-cache \
