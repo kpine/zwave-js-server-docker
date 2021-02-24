@@ -6,14 +6,8 @@ RUN apk add --no-cache \
 
 FROM base as builder
 
-# Specify PACKAGE_NAME and PACKAGE_VERSION to install various versions,
-# including from Github.
-ARG PACKAGE_NAME=@zwave-js/server
-ARG PACKAGE_VERSION=@1.0.0-beta.8
-
-# Specify an alternative version of zwave-js to install, e.g.
-# ZWAVE_JS_PACKAGE="zwave-js@6.4.0".
 ARG ZWAVE_JS_PACKAGE=zwave-js@6.4.0
+ARG ZWAVE_JS_SERVER_PACKAGE=@zwave-js/server@1.0.0-beta.9
 
 # Build tools required to install nodeserial, a zwave-js dependency
 RUN apk add --no-cache \
@@ -25,7 +19,7 @@ RUN apk add --no-cache \
 
 WORKDIR /app
 
-RUN npm install ${ZWAVE_JS_PACKAGE} ${PACKAGE_NAME}${PACKAGE_VERSION}
+RUN npm install ${ZWAVE_JS_PACKAGE} ${ZWAVE_JS_SERVER_PACKAGE}
 
 FROM base as app
 
@@ -48,14 +42,14 @@ EXPOSE 3000
 ENV PATH=/app/node_modules/.bin:$PATH
 
 ENV USB_PATH=/dev/zwave
-# Generate a network key:
-#   tr -dc '0-9A-F' </dev/urandom | fold -w 32 | head -n 1
-# 32-byte hex string
+# Generate a network key (32-byte hex string):
+#   < /dev/urandom tr -dc A-F0-9 | head -c32 ; echo
 ENV NETWORK_KEY=
 # true/false (default false)
 ENV LOGTOFILE=
 # error, warn, info, http, verbose, debug, silly (default debug)
 ENV LOGLEVEL=
+# when LOGTOFILE true, log to this file
 ENV LOGFILENAME=/logs/zwave.log
 
 ENTRYPOINT ["docker-entrypoint.sh"]
