@@ -7,7 +7,7 @@ RUN apk add --no-cache \
 FROM base as builder
 
 ARG ZWAVE_JS_PACKAGE=zwave-js@6.5.0
-ARG ZWAVE_JS_SERVER_PACKAGE=@zwave-js/server@1.0.0
+ARG ZWAVE_JS_SERVER_PACKAGE=@zwave-js/server@1.1.0
 
 # Build tools required to install nodeserial, a zwave-js dependency
 RUN apk add --no-cache \
@@ -31,8 +31,6 @@ WORKDIR /app
 ENV NODE_ENV=production
 
 COPY --from=builder /app/ ./
-RUN npm prune --production
-
 COPY docker-entrypoint.sh /usr/local/bin/
 COPY options.js .
 
