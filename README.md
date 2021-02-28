@@ -16,7 +16,6 @@ services:
     environment:
       NETWORK_KEY: "17DFB0C1BED4CABFF54E4B5375E257B3"
       LOGTOFILE: "true"
-      LOGLEVEL: "silly"
       TZ: "America/Los_Angeles"
     devices:
       - '/dev/serial/by-id/usb-0658_0200-if00:/dev/zwave'
