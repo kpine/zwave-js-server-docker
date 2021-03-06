@@ -4,7 +4,7 @@ A minimal docker container for [zwave-js-server](https://github.com/zwave-js/zwa
 
 Sample `docker-compose.yaml`:
 
-```
+```yaml
 version: '3.8'
 
 services:
