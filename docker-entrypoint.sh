@@ -12,10 +12,14 @@ if [ "x$1" = "x" ]; then
     exit 1
   fi
 
-  set -- --config options.js "$USB_PATH"
+  set -- zwave-server --config options.js "$USB_PATH"
+elif [ "$1" = "server" ]; then
+  shift
+  set -- zwave-server "$@"
+elif [ "$1" = "client" ]; then
+  shift
+  set -- zwave-client "$@"
 fi
 
-set -- zwave-server "$@"
-
-echo "Starting server:" "$@"
+echo "Executing command:" "$@"
 exec "$@"
