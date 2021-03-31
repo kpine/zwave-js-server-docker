@@ -6,7 +6,7 @@ RUN apk add --no-cache \
 
 FROM base as builder
 
-ARG ZWAVE_JS_PACKAGE=zwave-js@7.0.0
+ARG ZWAVE_JS_PACKAGE=zwave-js@7.0.1
 ARG ZWAVE_JS_SERVER_PACKAGE=@zwave-js/server@1.3.0
 
 # Build tools required to install nodeserial, a zwave-js dependency
