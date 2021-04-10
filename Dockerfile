@@ -14,6 +14,8 @@ RUN apk add --no-cache \
       make \
       python3
 
+RUN npm install -g npm@7.9.0
+
 WORKDIR /app
 
 ARG ZWAVE_JS_PACKAGE=zwave-js@7.2.1
