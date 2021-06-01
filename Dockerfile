@@ -18,7 +18,7 @@ RUN npm install -g npm@7.9.0
 
 WORKDIR /app
 
-ARG ZWAVE_JS_PACKAGE=zwave-js@7.7.0
+ARG ZWAVE_JS_PACKAGE=zwave-js@7.7.1
 ARG ZWAVE_JS_SERVER_PACKAGE=@zwave-js/server@1.7.0
 
 RUN npm install ${ZWAVE_JS_SERVER_PACKAGE} ${ZWAVE_JS_PACKAGE}
