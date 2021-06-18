@@ -14,7 +14,7 @@ RUN apk add --no-cache \
       make \
       python3
 
-RUN npm install -g npm@7.9.0
+RUN npm install npm@latest -g
 
 WORKDIR /app
 
