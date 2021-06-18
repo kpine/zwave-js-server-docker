@@ -5,7 +5,7 @@ RUN apk add --no-cache \
 
 FROM base as builder
 
-# Build tools required to install nodeserial, a zwave-js dependency
+# Build tools required to install serialport, a zwave-js dependency
 RUN apk add --no-cache \
       g++ \
       git \
