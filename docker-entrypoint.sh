@@ -13,6 +13,7 @@ if [ -z "$1" ]; then
   fi
 
   set -- zwave-server --config options.js "$USB_PATH"
+  echo "Starting zwave-server:" "$@"
 elif [ "$1" = "server" ]; then
   shift
   set -- zwave-server "$@"
@@ -21,5 +22,4 @@ elif [ "$1" = "client" ]; then
   set -- zwave-client "$@"
 fi
 
-echo "Executing command:" "$@"
 exec "$@"
