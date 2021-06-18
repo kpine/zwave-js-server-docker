@@ -1,8 +1,7 @@
 FROM alpine:3.13 as base
 
 RUN apk add --no-cache \
-      nodejs \
-      npm
+      nodejs
 
 FROM base as builder
 
@@ -12,6 +11,7 @@ RUN apk add --no-cache \
       git \
       linux-headers \
       make \
+      npm \
       python3
 
 RUN npm install npm@latest -g
