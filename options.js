@@ -5,6 +5,7 @@ module.exports = {
 
   storage: {
     cacheDir: "/cache",
+    deviceConfigPriorityDir: "/cache/config",
   },
 
   networkKey: process.env.NETWORK_KEY,

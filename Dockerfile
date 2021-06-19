@@ -36,7 +36,7 @@ COPY --from=builder /app/ ./
 COPY docker-entrypoint.sh /usr/local/bin/
 COPY options.js .
 
-VOLUME ["/cache", "/logs"]
+VOLUME ["/cache", "/cache/config", "/logs"]
 EXPOSE 3000
 
 ENV PATH=/app/node_modules/.bin:$PATH
