@@ -59,11 +59,11 @@ services:
 
 - `/cache` - The driver [cache directory](https://zwave-js.github.io/node-zwave-js/#/api/driver?id=zwaveoptions). A volume or bind mount should be mapped to this directory to persist the network information between container restarts.
 - `/cache/config` - The driver [device configuration priority directory](https://zwave-js.github.io/node-zwave-js/#/api/driver?id=zwaveoptions). Used to load your custom device configuration files. The directory is automatically created if `/cache` is a named volume, otherwise it must be created manually or mapped as a volume/bind mount.
-- `/logs` - When logging to file is enabled, this is the directory where the driver log file is written to.
+- `/logs` - When logging to file is enabled, this is the directory where the driver log file is written to. Assign a volume or bind mount to this directory to access and save the logfiles outside of the container.
 
 ### Ports:
 
-- `3000` - The zwave-js-server websocket port. External applications, such as Home Assistant, must be able to connect to this port.
+- `3000` - The zwave-js-server websocket port. External applications, such as Home Assistant, must be able to connect to this port to interact with the server.
 
 ## Hints
 
@@ -78,9 +78,9 @@ $ < /dev/urandom tr -dc A-F0-9 | head -c32 ; echo
 
 Instead of using the `USB_PATH` environment variable, map the device path to the default `/dev/zwave`.
 
-### Device Configuration Fileis
+### User Device Configuration Files
 
-Use the `/cache/config` directory to test new device config files or make modifications to existing ones. The files located in this directory will supplement or override the embedded devicie config database. The driver logs will indicate which file was loaded:
+Use the `/cache/config` directory to easily test new device config files or modifications to existing ones. The files located in this directory will supplement or override the embedded device config database. When the container is restarted and the network is started, the driver logs will indicate which file was loaded:
 
 ```
 2021-06-19T06:19:18.506Z CNTRLR   [Node 007] Embedded device config loaded
