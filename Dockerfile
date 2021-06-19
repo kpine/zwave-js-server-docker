@@ -5,7 +5,7 @@ RUN apk add --no-cache \
 
 FROM base as builder
 
-# Build tools required to install nodeserial, a zwave-js dependency
+# Build tools required to install serialport, a zwave-js dependency
 RUN apk add --no-cache \
       g++ \
       git \
@@ -35,8 +35,10 @@ ENV NODE_ENV=production
 COPY --from=builder /app/ ./
 COPY docker-entrypoint.sh /usr/local/bin/
 COPY options.js .
+RUN mkdir -p /cache/config \
+             /logs
 
-VOLUME ["/cache", "/logs"]
+VOLUME "/cache"
 EXPOSE 3000
 
 ENV PATH=/app/node_modules/.bin:$PATH
@@ -50,6 +52,6 @@ ENV LOGTOFILE=
 # error, warn, info, http, verbose, debug, silly (default debug)
 ENV LOGLEVEL=
 # when LOGTOFILE true, log to this file
-ENV LOGFILENAME=/logs/zwave.log
+ENV LOGFILENAME=/logs/zwave_%DATE%.log
 
 ENTRYPOINT ["docker-entrypoint.sh"]
