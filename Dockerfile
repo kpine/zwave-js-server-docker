@@ -52,6 +52,6 @@ ENV LOGTOFILE=
 # error, warn, info, http, verbose, debug, silly (default debug)
 ENV LOGLEVEL=
 # when LOGTOFILE true, log to this file
-ENV LOGFILENAME=/logs/zwave.log
+ENV LOGFILENAME=/logs/zwave_%DATE%.log
 
 ENTRYPOINT ["docker-entrypoint.sh"]

@@ -1,6 +1,7 @@
 module.exports = {
   logConfig: {
     filename: process.env.LOGFILENAME,
+    forceConsole: true,
   },
 
   storage: {
