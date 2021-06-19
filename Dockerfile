@@ -35,8 +35,10 @@ ENV NODE_ENV=production
 COPY --from=builder /app/ ./
 COPY docker-entrypoint.sh /usr/local/bin/
 COPY options.js .
+RUN mkdir -p /cache/config \
+             /logs
 
-VOLUME ["/cache", "/cache/config", "/logs"]
+VOLUME "/cache"
 EXPOSE 3000
 
 ENV PATH=/app/node_modules/.bin:$PATH
