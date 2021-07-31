@@ -1,4 +1,4 @@
-FROM alpine:3.13 as base
+FROM alpine:3.12 as base
 
 RUN apk add --no-cache \
       nodejs
