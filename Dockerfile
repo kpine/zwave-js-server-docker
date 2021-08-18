@@ -35,8 +35,7 @@ ENV NODE_ENV=production
 COPY --from=builder /app/ ./
 COPY docker-entrypoint.sh /usr/local/bin/
 COPY options.js .
-RUN mkdir -p /cache/config \
-             /logs
+RUN mkdir -p /cache/config /cache/db /logs
 
 VOLUME "/cache"
 EXPOSE 3000
@@ -53,5 +52,7 @@ ENV LOGTOFILE=
 ENV LOGLEVEL=
 # when LOGTOFILE true, log to this file
 ENV LOGFILENAME=/logs/zwave_%DATE%.log
+# Path to persistent device configuration DB
+ENV ZWAVEJS_EXTERNAL_CONFIG=/cache/db
 
 ENTRYPOINT ["docker-entrypoint.sh"]
