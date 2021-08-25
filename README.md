@@ -8,9 +8,9 @@ For a more functional application that also provides the zwave-js-server, it is 
 
 Z-Wave JS (the driver) stores information about the Z-Wave network in a set of cache files. When the server restarts, the driver loads the network information from the cache. Without this information the network will not be fully usable right away. Therefore it is very important that the cache files are persisted between container restarts.
 
-The `docker run` examples below use an environment file to provide the Z-Wave network keys.
+The `docker run` examples below use an environment file to provide all of the Z-Wave network keys.
 
-```
+```shell
 $ cat .env
 S2_ACCESS_CONTROL_KEY=7764841BC794A54442E324682A550CEF
 S2_AUTHENTICATED_KEY=66EA86F088FFD6D7497E0B32BC0C8B99
@@ -20,7 +20,7 @@ S0_LEGACY_KEY=17DFB0C1BED4CABFF54E4B5375E257B3
 
 ### Run with a volume mount
 
-```
+```shell
 # Create a persistent volume for the driver cache
 $ docker volume create zjs-storage
 
@@ -30,7 +30,7 @@ $ docker run -d -p 3000:3000 --name=zjs -v zjs-storage:/cache --env-file=.env --
 
 ### Run with a bind mount
 
-```
+```shell
 # starts the server and uses a local folder as the persisent cache directory
 $ docker run -d -p 3000:3000 --name=zjs -v "$PWD/cache:/cache" --env-file=.env --device "/dev/serial/by-id/usb-0658_0200-if00:/dev/zwave" kpine/zwave-js-server:latest
 ```
@@ -60,24 +60,24 @@ services:
       - '3000:3000'
 ```
 
-### Environment variables:
+### Environment variables
 
-- `LOGTOFILE`: Set this to `true` to [configure](https://zwave-js.github.io/node-zwave-js/#/api/driver?id=logconfig) the driver to log to a file. Leave undefined to use the driver's default setting.
+- `LOGTOFILE`: Set this to `true` to [configure](https://zwave-js.github.io/node-zwave-js/#/api/driver?id=logconfig) the driver to log to a file.
 - `LOGFILENAME`: Set this to [configure](https://zwave-js.github.io/node-zwave-js/#/api/driver?id=logconfig) the driver log filename (only used when `LOGTOFILE` is `true`). The default is `/logs/zwave_%DATE%.log`. Note that the driver will automatically rotate the logfiles using a date based scheme.
-- `LOGLEVEL`: Set this to [configure](https://zwave-js.github.io/node-zwave-js/#/api/driver?id=logconfig) the driver loglevel. Leave undefined to use the driver's default setting.
+- `LOGLEVEL`: Set this to [configure](https://zwave-js.github.io/node-zwave-js/#/api/driver?id=logconfig) the driver loglevel.
 - `S2_ACCESS_CONTROL_KEY`: The network key for the S2 Access Control security class.
 - `S2_AUTHENTICATED_KEY`: The network key for the S2 Authenticated security class.
 - `S2_UNAUTHENTICATED_KEY`: The network key for the S2 Unauthenticated security class.
 - `S0_LEGACY_KEY`: The network key for the S0 (Legacy) security class. This replaces the deprecated `NETWORK_KEY` variable.
-- `USB_PATH`: The device path of the Z-Wave USB controller. Defaults to `/dev/zwave`. The controller device path can be mapped from the host as `/dev/zwave` instead as an alternative to using this variable.
+- `USB_PATH`: The device path of the Z-Wave USB controller. Defaults to `/dev/zwave`. Use of this variable is unnecessary if the controller device path is mapped from the host as `/dev/zwave`.
 
-### Directories:
+### Directories
 
 - `/cache` - The driver [cache directory](https://zwave-js.github.io/node-zwave-js/#/api/driver?id=zwaveoptions). A volume or bind mount should be mapped to this directory to persist the network information between container restarts.
 - `/cache/config` - The driver [device configuration priority directory](https://zwave-js.github.io/node-zwave-js/#/api/driver?id=zwaveoptions). Used to load your custom device configuration files. The directory is automatically created if `/cache` is a named volume, otherwise it must be created manually or mapped as a volume/bind mount.
 - `/logs` - When logging to file is enabled, this is the directory where the driver log file is written to. Assign a volume or bind mount to this directory to access and save the logfiles outside of the container.
 
-### Ports:
+### Ports
 
 - `3000` - The zwave-js-server websocket port. External applications, such as Home Assistant, must be able to connect to this port to interact with the server.
 
@@ -85,15 +85,16 @@ services:
 
 ### Network Keys
 
-All network keys must specified in 16-byte hexidecimal strings (32 characters). A simple way to generate a random network key is with the following command:
-```
+All network keys must specified as 16-byte hexidecimal strings (32 characters). A simple way to generate a random network key is with the following command:
+
+```shell
 $ < /dev/urandom tr -dc A-F0-9 | head -c32 ; echo
 8387D66323E8209C58B0C317FD1F4251
 ```
 
 All keys should be unique; sharing keys between multiple security classes is a security risk. See the Z-Wave JS [Key management](https://zwave-js.github.io/node-zwave-js/#/getting-started/security-s2?id=key-management) docs for futher details.
 
-At a minimum, the S0 (Legacy) network key is required, otherwise the zwave-js-server will fail to start. The S2 keys are optional but highly recommended. If unspecified, S2 features will be unavailable.
+At a minimum, the S0 (Legacy) network key is required, otherwise the zwave-js-server will fail to start. The S2 keys are optional but highly recommended. If unspecified, S2 inclusion will not be available.
 
 ### USB Path
 
@@ -101,11 +102,9 @@ Instead of using the `USB_PATH` environment variable, map the USB controller dev
 
 ### User Device Configuration Files
 
-Use the `/cache/config` directory to easily test new device config files or modifications to existing ones. The files located in this directory will supplement or override the embedded device config database. When the container is restarted and the network is started, the driver logs will indicate which file was loaded:
+Use the `/cache/config` directory to easily test new device config files or modifications to existing ones. The files located in this directory will supplement or override the embedded device config database. When the container is restarted the driver logs will indicate which file was loaded:
 
-```
+```text
 2021-06-19T06:19:18.506Z CNTRLR   [Node 007] Embedded device config loaded
-```
-```
-2021-06-19T06:21:43.793Z CNTRLR   [Node 007] User-provided device config loaded
+2021-06-19T06:21:43.793Z CNTRLR   [Node 008] User-provided device config loaded
 ```
