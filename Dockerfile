@@ -45,6 +45,11 @@ ENV PATH=/app/node_modules/.bin:$PATH
 ENV USB_PATH=/dev/zwave
 # Generate a network key (32-byte hex string):
 #   < /dev/urandom tr -dc A-F0-9 | head -c32 ; echo
+ENV S2_UNAUTHENTICATED_KEY=
+ENV S2_AUTHENTICATED_KEY=
+ENV S2_ACCESSCONTROL_KEY=
+ENV S0_LEGACY_KEY=
+# WARNING: DEPRECATED
 ENV NETWORK_KEY=
 # true/false (default false)
 ENV LOGTOFILE=
