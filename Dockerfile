@@ -47,10 +47,8 @@ ENV USB_PATH=/dev/zwave
 #   < /dev/urandom tr -dc A-F0-9 | head -c32 ; echo
 ENV S2_UNAUTHENTICATED_KEY=
 ENV S2_AUTHENTICATED_KEY=
-ENV S2_ACCESSCONTROL_KEY=
+ENV S2_ACCESS_CONTROL_KEY=
 ENV S0_LEGACY_KEY=
-# WARNING: DEPRECATED
-ENV NETWORK_KEY=
 # true/false (default false)
 ENV LOGTOFILE=
 # error, warn, info, http, verbose, debug, silly (default debug)
