@@ -43,14 +43,6 @@ EXPOSE 3000
 ENV PATH=/app/node_modules/.bin:$PATH
 
 ENV USB_PATH=/dev/zwave
-# Generate a network key (32-byte hex string):
-#   < /dev/urandom tr -dc A-F0-9 | head -c32 ; echo
-ENV NETWORK_KEY=
-# true/false (default false)
-ENV LOGTOFILE=
-# error, warn, info, http, verbose, debug, silly (default debug)
-ENV LOGLEVEL=
-# when LOGTOFILE true, log to this file
 ENV LOGFILENAME=/logs/zwave_%DATE%.log
 # Path to persistent device configuration DB
 ENV ZWAVEJS_EXTERNAL_CONFIG=/cache/db
