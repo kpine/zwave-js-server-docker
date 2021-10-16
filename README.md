@@ -70,7 +70,7 @@ services:
 - `S2_UNAUTHENTICATED_KEY`: The network key for the S2 Unauthenticated security class.
 - `S0_LEGACY_KEY`: The network key for the S0 (Legacy) security class. This replaces the deprecated `NETWORK_KEY` variable.
 - `USB_PATH`: The device path of the Z-Wave USB controller. Defaults to `/dev/zwave`. Use of this variable is unnecessary if the controller device path is mapped from the host as `/dev/zwave`.
-- `ZWAVEJS_ENABLE_SOFT_RESET`: Set this to any value to enable the [soft-reset](https://zwave-js.github.io/node-zwave-js/#/api/driver?id=softreset) functionality. This requires special container configurations so it is disabled by default. See instructions below for configuring the container to support this.
+- `ZWAVEJS_ENABLE_SOFT_RESET`: Set this to any value to enable Z-Wave JS' [soft-reset](https://zwave-js.github.io/node-zwave-js/#/api/driver?id=softreset) functionality. This requires a special container configurations so it is disabled by default. See instructions below for configuring the container to support this.
 
 ### Directories
 
@@ -86,14 +86,14 @@ services:
 
 ### Network Keys
 
-All network keys must specified as 16-byte hexidecimal strings (32 characters). A simple way to generate a random network key is with the following command:
+All network keys must specified as 16-byte hexadecimal strings (32 characters). A simple way to generate a random network key is with the following command:
 
 ```shell
 $ < /dev/urandom tr -dc A-F0-9 | head -c32 ; echo
 8387D66323E8209C58B0C317FD1F4251
 ```
 
-All keys should be unique; sharing keys between multiple security classes is a security risk. See the Z-Wave JS [Key management](https://zwave-js.github.io/node-zwave-js/#/getting-started/security-s2?id=key-management) docs for futher details.
+All keys should be unique; sharing keys between multiple security classes is a security risk. See the Z-Wave JS [Key management](https://zwave-js.github.io/node-zwave-js/#/getting-started/security-s2?id=key-management) docs for further details.
 
 At a minimum, the S0 (Legacy) network key is required, otherwise the zwave-js-server will fail to start. The S2 keys are optional but highly recommended. If unspecified, S2 inclusion will not be available.
 
@@ -103,7 +103,7 @@ Instead of using the `USB_PATH` environment variable, map the USB controller dev
 
 ### User Device Configuration Files
 
-Use the `/cache/config` directory to easily test new device config files or modifications to existing ones. The files located in this directory will supplement or override the embedded device config database. When the container is restarted the driver logs will indicate which file was loaded:
+Use the `/cache/config` directory to easily test new device configuration files or modifications to existing ones. The files located in this directory will supplement or override the embedded device configuration database. When the container is restarted the driver logs will indicate which file was loaded:
 
 ```text
 2021-06-19T06:19:18.506Z CNTRLR   [Node 007] Embedded device config loaded
@@ -171,7 +171,7 @@ $ docker run --rm -it \
     kpine/zwave-js-server:latest
 ```
 
-In the example, we returned to mapping the host USB path to `/dev/zwave`, and also configured the cgroup rule to allow read-modify-write access to devices with major number 166, i.e. the controller. The device mapping is still required at container creation time. To complete this, we need a udev script that runs anytime the stick is plugged in and re-creates the `/dev/zwave` device inside the container. This script is the bare minumum; you may want to customize it or make it more robust.
+In the example, we returned to mapping the host USB path to `/dev/zwave`, and also configured the cgroup rule to allow read-modify-write access to devices with major number 166, i.e. the controller. The device mapping is still required at container creation time. To complete this, we need a udev script that runs anytime the stick is plugged in and re-creates the `/dev/zwave` device inside the container. This script is the bare minimum; you may want to customize it or make it more robust.
 
 ```text
 $ cat << EOF | sudo tee /etc/udev/rules.d
