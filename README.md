@@ -70,6 +70,7 @@ services:
 - `S2_UNAUTHENTICATED_KEY`: The network key for the S2 Unauthenticated security class.
 - `S0_LEGACY_KEY`: The network key for the S0 (Legacy) security class. This replaces the deprecated `NETWORK_KEY` variable.
 - `USB_PATH`: The device path of the Z-Wave USB controller. Defaults to `/dev/zwave`. Use of this variable is unnecessary if the controller device path is mapped from the host as `/dev/zwave`.
+- `ZWAVEJS_ENABLE_SOFT_RESET`: Set this to any value to enable the [soft-reset](https://zwave-js.github.io/node-zwave-js/#/api/driver?id=softreset) functionality. This requires special container configurations so it is disabled by default. See instructions below for configuring the container to support this.
 
 ### Directories
 
