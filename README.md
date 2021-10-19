@@ -63,8 +63,8 @@ services:
 ### Environment variables
 
 - `LOGTOFILE`: Set this to `true` to [configure](https://zwave-js.github.io/node-zwave-js/#/api/driver?id=logconfig) the driver to log to a file.
-- `LOGFILENAME`: Set this to [configure](https://zwave-js.github.io/node-zwave-js/#/api/driver?id=logconfig) the driver log filename (only used when `LOGTOFILE` is `true`). The default is `/logs/zwave_%DATE%.log`. Note that the driver will automatically rotate the logfiles using a date based scheme.
-- `LOGLEVEL`: Set this to [configure](https://zwave-js.github.io/node-zwave-js/#/api/driver?id=logconfig) the driver loglevel.
+- `LOGFILENAME`: Set this to [configure](https://zwave-js.github.io/node-zwave-js/#/api/driver?id=logconfig) the driver log filename (only used when `LOGTOFILE` is `true`). The default is `/logs/zwave_%DATE%.log`. Note that the driver will automatically rotate the log files using a date based scheme.
+- `LOGLEVEL`: Set this to [configure](https://zwave-js.github.io/node-zwave-js/#/api/driver?id=logconfig) the driver log level.
 - `S2_ACCESS_CONTROL_KEY`: The network key for the S2 Access Control security class.
 - `S2_AUTHENTICATED_KEY`: The network key for the S2 Authenticated security class.
 - `S2_UNAUTHENTICATED_KEY`: The network key for the S2 Unauthenticated security class.
@@ -75,7 +75,7 @@ services:
 
 - `/cache` - The driver [cache directory](https://zwave-js.github.io/node-zwave-js/#/api/driver?id=zwaveoptions). A volume or bind mount should be mapped to this directory to persist the network information between container restarts.
 - `/cache/config` - The driver [device configuration priority directory](https://zwave-js.github.io/node-zwave-js/#/api/driver?id=zwaveoptions). Used to load your custom device configuration files. The directory is automatically created if `/cache` is a named volume, otherwise it must be created manually or mapped as a volume/bind mount.
-- `/logs` - When logging to file is enabled, this is the directory where the driver log file is written to. Assign a volume or bind mount to this directory to access and save the logfiles outside of the container.
+- `/logs` - When logging to file is enabled, this is the directory where the driver log file is written to. Assign a volume or bind mount to this directory to access and save the log files outside of the container.
 
 ### Ports
 
@@ -85,14 +85,14 @@ services:
 
 ### Network Keys
 
-All network keys must specified as 16-byte hexidecimal strings (32 characters). A simple way to generate a random network key is with the following command:
+All network keys must specified as 16-byte hexadecimal strings (32 characters). A simple way to generate a random network key is with the following command:
 
 ```shell
 $ < /dev/urandom tr -dc A-F0-9 | head -c32 ; echo
 8387D66323E8209C58B0C317FD1F4251
 ```
 
-All keys should be unique; sharing keys between multiple security classes is a security risk. See the Z-Wave JS [Key management](https://zwave-js.github.io/node-zwave-js/#/getting-started/security-s2?id=key-management) docs for futher details.
+All keys should be unique; sharing keys between multiple security classes is a security risk. See the Z-Wave JS [Key management](https://zwave-js.github.io/node-zwave-js/#/getting-started/security-s2?id=key-management) docs for further details.
 
 At a minimum, the S0 (Legacy) network key is required, otherwise the zwave-js-server will fail to start. The S2 keys are optional but highly recommended. If unspecified, S2 inclusion will not be available.
 
@@ -102,16 +102,16 @@ Instead of using the `USB_PATH` environment variable, map the USB controller dev
 
 ### User Device Configuration Files
 
-Use the `/cache/config` directory to easily test new device config files or modifications to existing ones. The files located in this directory will supplement or override the embedded device config database. When the container is restarted the driver logs will indicate which file was loaded:
+Use the `/cache/config` directory to easily test new device configuration files or modifications to existing ones. The files located in this directory will supplement or override the embedded device configuration database. When the container is restarted the driver logs will indicate which file was loaded:
 
 ```text
 2021-06-19T06:19:18.506Z CNTRLR   [Node 007] Embedded device config loaded
 2021-06-19T06:21:43.793Z CNTRLR   [Node 008] User-provided device config loaded
 ```
 
-### Cache Lockfiles
+### Cache Lock Files
 
-Z-Wave JS uses directories as lockfiles to prevent the cache files from being modified by multiple concurrent processes; this helps prevent against cache corruption. These directories are located in the cache directory, next to the actual cache files. The lock technique updates the `mtime` (Modified time) of the lockfile every ~1 second. If your storage media is sensitive to frequent writes, such as an SD card, you may want to relocate the lockfiles to another directory, such as a tmpfs. To relocate the cache files, set the `ZWAVEJS_LOCK_DIRECTORY` environment variable to an alternate path, preferably some kind of tmpfs on the host. Here's an example snippet for a compose file:
+Z-Wave JS uses directories as lock files to prevent the cache files from being modified by multiple concurrent processes; this helps prevent against cache corruption. These directories are located in the cache directory, next to the actual cache files. The lock technique updates the `mtime` (Modified time) of the lock file every ~1 second. If your storage media is sensitive to frequent writes, such as an SD card, you may want to relocate the lock files to another directory, such as a tmpfs. To relocate the cache files, set the `ZWAVEJS_LOCK_DIRECTORY` environment variable to an alternate path, preferably some kind of tmpfs on the host. Here's an example snippet for a compose file:
 
 ```yaml
     environment:
@@ -120,6 +120,6 @@ Z-Wave JS uses directories as lockfiles to prevent the cache files from being mo
       - /run/lock/zwave-js:/run/lock/zwave-js
 ```
 
-The enviroment variable tells Z-Wave JS to store the lockfiles in the directory `/run/lock/zwave-js`. The volume entry maps the hosts `/run/lock/zwave-js` directory, which is a tmpfs, to the container directory with the same name. The results being that the lockfiles created in the container are located in tmpfs on the host.
+The environment variable tells Z-Wave JS to store the lock files in the directory `/run/lock/zwave-js`. The volume entry maps the hosts `/run/lock/zwave-js` directory, which is a tmpfs, to the container directory with the same name. The results being that the lock files created in the container are located in tmpfs on the host.
 
-The path `/run/lock` is usually mounted as a tmpfs. Another canditate might be `/tmp/zwave-js`.
+The path `/run/lock` is usually mounted as a tmpfs. Another candidate might be `/tmp/zwave-js`.
