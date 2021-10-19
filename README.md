@@ -108,3 +108,18 @@ Use the `/cache/config` directory to easily test new device config files or modi
 2021-06-19T06:19:18.506Z CNTRLR   [Node 007] Embedded device config loaded
 2021-06-19T06:21:43.793Z CNTRLR   [Node 008] User-provided device config loaded
 ```
+
+### Cache Lockfiles
+
+Z-Wave JS uses directories as lockfiles to prevent the cache files from being modified by multiple concurrent processes; this helps prevent against cache corruption. These directories are located in the cache directory, next to the actual cache files. The lock technique updates the `mtime` (Modified time) of the lockfile every ~1 second. If your storage media is sensitive to frequent writes, such as an SD card, you may want to relocate the lockfiles to another directory, such as a tmpfs. To relocate the cache files, set the `ZWAVEJS_LOCK_DIRECTORY` environment variable to an alternate path, preferably some kind of tmpfs on the host. Here's an example snippet for a compose file:
+
+```yaml
+    environment:
+      ZWAVEJS_LOCK_DIRECTORY: "/run/lock/zwave-js"
+    volumes:
+      - /run/lock/zwave-js:/run/lock/zwave-js
+```
+
+The enviroment variable tells Z-Wave JS to store the lockfiles in the directory `/run/lock/zwave-js`. The volume entry maps the hosts `/run/lock/zwave-js` directory, which is a tmpfs, to the container directory with the same name. The results being that the lockfiles created in the container are located in tmpfs on the host.
+
+The path `/run/lock` is usually mounted as a tmpfs. Another canditate might be `/tmp/zwave-js`.
