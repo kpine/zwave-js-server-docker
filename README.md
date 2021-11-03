@@ -111,7 +111,7 @@ Use the `/cache/config` directory to easily test new device configuration files 
 
 ### Serial Soft-Reset
 
-Z-Wave JS performs a soft-reset (restart) of the Z-Wave controller during startup, and during certain operations such as NVM backups and restores. The soft-reset can result in a USB disconnect for some Z-Wave controllers, which may cause problems with certain container runtimes or host configurations. If you observe that Z-Wave JS has trouble finding the USB device, you may try opting out of this functionality by setting the `ZWAVEJS_ENABLE_SOFT_RESET` environment variable, or the `enableSoftReset` driver option. For more details, see the [`softReset`](https://zwave-js.github.io/node-zwave-js/#/api/driver?id=softreset) documentation.
+Z-Wave JS performs a soft-reset (restart) of the Z-Wave controller during startup, and during certain operations such as NVM backups and restores. The soft-reset can result in a USB disconnect for some Z-Wave controllers, which may cause problems with certain container runtimes or host configurations. If you observe that Z-Wave JS has trouble finding the USB device, you may try opting out of this functionality by setting the `ZWAVEJS_DISABLE_SOFT_RESET` environment variable, or setting the `enableSoftReset` driver option to `false`. For more details, see the [`softReset`](https://zwave-js.github.io/node-zwave-js/#/api/driver?id=softreset) documentation.
 
 ### Cache Lock Files
 
