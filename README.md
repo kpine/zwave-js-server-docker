@@ -81,7 +81,7 @@ services:
 
 - `3000` - The zwave-js-server websocket port. External applications, such as Home Assistant, must be able to connect to this port to interact with the server.
 
-## Hints
+## Details
 
 ### Network Keys
 
@@ -108,6 +108,10 @@ Use the `/cache/config` directory to easily test new device configuration files 
 2021-06-19T06:19:18.506Z CNTRLR   [Node 007] Embedded device config loaded
 2021-06-19T06:21:43.793Z CNTRLR   [Node 008] User-provided device config loaded
 ```
+
+### Serial Soft-Reset
+
+Z-Wave JS performs a soft-reset (restart) of the Z-Wave controller during startup, and during certain operations such as NVM backups and restores. The soft-reset can result in a USB disconnect for some Z-Wave controllers, which may cause problems with certain container runtimes or host configurations. If you observe that Z-Wave JS has trouble finding the USB device, you may try opting out of this functionality by setting the `ZWAVEJS_ENABLE_SOFT_RESET` environment variable, or the `enableSoftReset` driver option. For more details, see the [`softReset`](https://zwave-js.github.io/node-zwave-js/#/api/driver?id=softreset) documentation.
 
 ### Cache Lock Files
 
