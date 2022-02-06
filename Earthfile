@@ -59,4 +59,4 @@ docker:
   ARG EARTHLY_TARGET_TAG_DOCKER
   ARG TAG="$EARTHLY_TARGET_TAG_DOCKER"
   ARG DOCKERHUB_USER=kpine
-  SAVE IMAGE --push $DOCKERHUB_USER/zwave-js-server:$TAG
+  SAVE IMAGE --push $DOCKERHUB_USER/zwave-js-server:$TAG $DOCKERHUB_USER/zwave-js-server:latest
