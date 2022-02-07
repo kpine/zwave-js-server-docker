@@ -3,10 +3,7 @@ VERSION 0.6
 FROM alpine:3.13
 
 ARG ZWAVE_JS_VERSION=latest
-ARG ZWAVE_JS_PACKAGE=zwave-js@$ZWAVE_JS_VERSION
 ARG ZWAVE_JS_SERVER_VERSION=latest
-ARG ZWAVE_JS_SERVER_PACKAGE=@zwave-js/server@$ZWAVE_JS_SERVER_VERSION
-ARG NPM_INSTALL_EXTRA_FLAGS
 
 WORKDIR /app
 
@@ -37,6 +34,10 @@ build:
 
   # node serialport fails to install without a newer npm
   RUN npm install npm@latest -g
+
+  ARG ZWAVE_JS_PACKAGE=zwave-js@$ZWAVE_JS_VERSION
+  ARG ZWAVE_JS_SERVER_PACKAGE=@zwave-js/server@$ZWAVE_JS_SERVER_VERSION
+  ARG NPM_INSTALL_EXTRA_FLAGS
 
   RUN npm install \
         $NPM_INSTALL_EXTRA_FLAGS \
