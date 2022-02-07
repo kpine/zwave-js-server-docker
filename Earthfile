@@ -13,7 +13,15 @@ all:
     --platform=linux/amd64 \
     --platform=linux/arm/v7 \
     --platform=linux/arm64 \
-    +docker
+    +docker-release
+
+test:
+  BUILD \
+    --platform=linux/amd64 \
+    --platform=linux/arm/v7 \
+    --platform=linux/arm64 \
+    +docker-test
+
 
 build:
   RUN apk add --no-cache \
@@ -56,6 +64,15 @@ docker:
   EXPOSE 3000
   ENTRYPOINT ["docker-entrypoint.sh"]
 
+docker-test:
+  FROM +docker
+  ARG EARTHLY_TARGET_TAG_DOCKER
+  ARG TAG="test-$EARTHLY_TARGET_TAG_DOCKER"
+  ARG DOCKERHUB_USER=kpine
+  SAVE IMAGE --push $DOCKERHUB_USER/zwave-js-server:$TAG
+
+docker-release:
+  FROM +docker
   ARG EARTHLY_TARGET_TAG_DOCKER
   ARG TAG="$EARTHLY_TARGET_TAG_DOCKER"
   ARG DOCKERHUB_USER=kpine
