@@ -70,12 +70,14 @@ docker-test:
   FROM +docker
   ARG EARTHLY_TARGET_TAG_DOCKER
   ARG TAG="test-$EARTHLY_TARGET_TAG_DOCKER"
-  ARG DOCKERHUB_USER=kpine
-  SAVE IMAGE --push $DOCKERHUB_USER/zwave-js-server:$TAG
+  ARG REGISTRY=docker.io
+  ARG REPOSITORY=kpine/zwave-js-server
+  SAVE IMAGE --push $REGISTRY/$REPOSITORY:$TAG
 
 docker-release:
   FROM +docker
   ARG EARTHLY_TARGET_TAG_DOCKER
   ARG TAG="$EARTHLY_TARGET_TAG_DOCKER"
-  ARG DOCKERHUB_USER=kpine
-  SAVE IMAGE --push $DOCKERHUB_USER/zwave-js-server:$TAG $DOCKERHUB_USER/zwave-js-server:latest
+  ARG REGISTRY=docker.io
+  ARG REPOSITORY=kpine/zwave-js-server
+  SAVE IMAGE --push $REGISTRY/$REPOSITORY:$TAG $REGISTRY/$REPOSITORY:latest
