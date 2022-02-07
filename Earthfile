@@ -63,6 +63,16 @@ docker:
   ENV LOGFILENAME=/logs/zwave_%DATE%.log
   ENV ZWAVEJS_EXTERNAL_CONFIG=/cache/db
 
+  ARG BUILD_DATE
+  ARG VERSION="$ZWAVE_JS_SERVER_VERSION-$ZWAVE_JS_VERSION"
+  ARG EARTHLY_GIT_SHORT_HASH
+  LABEL org.opencontainers.image.created=$BUILD_DATE
+  LABEL org.opencontainers.image.description="A standalone Z-Wave JS Server"
+  LABEL org.opencontainers.image.revision=$EARTHLY_GIT_SHORT_HASH
+  LABEL org.opencontainers.image.source="https://github.com/kpine/zwave-js-server-docker"
+  LABEL org.opencontainers.image.title="Z-Wave JS Server"
+  LABEL org.opencontainers.image.version=$VERSION
+
   VOLUME /cache
   EXPOSE 3000
   ENTRYPOINT ["docker-entrypoint.sh"]
