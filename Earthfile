@@ -33,7 +33,12 @@ build:
         python3
 
   # node serialport fails to install without a newer npm
-  RUN npm install npm@latest -g
+  RUN npm install npm@latest-7 -g \
+   && npm config set \
+        fetch-retries 5 \
+        fetch-retry-mintimeout 100000 \
+        fetch-retry-maxtimeout 600000 \
+        cache-min 360
 
   ARG ZWAVE_JS_PACKAGE=zwave-js@$ZWAVE_JS_VERSION
   ARG ZWAVE_JS_SERVER_PACKAGE=@zwave-js/server@$ZWAVE_JS_SERVER_VERSION
