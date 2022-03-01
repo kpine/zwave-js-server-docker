@@ -14,13 +14,18 @@ all:
     --platform=linux/arm64 \
     +docker-release
 
+  BUILD \
+    --platform=linux/amd64 \
+    --platform=linux/arm/v7 \
+    --platform=linux/arm64 \
+    +github-release
+
 test:
   BUILD \
     --platform=linux/amd64 \
     --platform=linux/arm/v7 \
     --platform=linux/arm64 \
     +docker-test
-
 
 build:
   RUN apk add --no-cache \
@@ -96,5 +101,12 @@ docker-release:
   FROM +docker
   ARG TAG="$ZWAVE_JS_SERVER_VERSION-$ZWAVE_JS_VERSION"
   ARG REGISTRY=docker.io
+  ARG REPOSITORY=kpine/zwave-js-server
+  SAVE IMAGE --push $REGISTRY/$REPOSITORY:$TAG $REGISTRY/$REPOSITORY:latest
+
+github-release:
+  FROM +docker
+  ARG TAG="$ZWAVE_JS_SERVER_VERSION-$ZWAVE_JS_VERSION"
+  ARG REGISTRY=ghcr.io
   ARG REPOSITORY=kpine/zwave-js-server
   SAVE IMAGE --push $REGISTRY/$REPOSITORY:$TAG $REGISTRY/$REPOSITORY:latest
