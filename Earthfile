@@ -1,6 +1,6 @@
 VERSION 0.6
 
-FROM alpine:3.13
+FROM alpine:3.15
 
 ARG ZWAVE_JS_VERSION=latest
 ARG ZWAVE_JS_SERVER_VERSION=latest
@@ -44,10 +44,14 @@ build:
   ARG ZWAVE_JS_SERVER_PACKAGE=@zwave-js/server@$ZWAVE_JS_SERVER_VERSION
   ARG NPM_INSTALL_EXTRA_FLAGS
 
+  # Prebuilt binaries for node serialport and Alpine are broken, so we
+  # rebuild from source:
+  #   https://github.com/serialport/node-serialport/issues/2438
   RUN npm install \
         $NPM_INSTALL_EXTRA_FLAGS \
         $ZWAVE_JS_SERVER_PACKAGE \
-        $ZWAVE_JS_PACKAGE
+        $ZWAVE_JS_PACKAGE \
+    && npm rebuild --build-from-source @serialport/bindings-cpp
 
   SAVE ARTIFACT /app /app
 
