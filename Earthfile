@@ -77,7 +77,7 @@ docker:
   ENV LOGFILENAME=/logs/zwave_%DATE%.log
   ENV ZWAVEJS_EXTERNAL_CONFIG=/cache/db
 
-  ARG BUILD_DATE
+  ARG BUILD_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
   ARG VERSION="$ZWAVE_JS_SERVER_VERSION-$ZWAVE_JS_VERSION"
   ARG EARTHLY_GIT_SHORT_HASH
   LABEL org.opencontainers.image.created=$BUILD_DATE
