@@ -37,9 +37,7 @@ build:
         npm \
         python3
 
-  # node serialport fails to install without a newer npm
-  RUN npm install npm@latest-7 -g \
-   && npm config set \
+  RUN npm config set \
         fetch-retries 5 \
         fetch-retry-mintimeout 100000 \
         fetch-retry-maxtimeout 600000 \
