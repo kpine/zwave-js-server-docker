@@ -23,11 +23,11 @@ test:
 
 build:
   RUN apk add --no-cache \
-        nodejs \
         g++ \
         git \
         linux-headers \
         make \
+        nodejs \
         npm \
         python3
 
@@ -58,8 +58,8 @@ docker:
   COPY options.js /app
 
   RUN apk add --no-cache \
-        nodejs \
-        jq
+        jq \
+        nodejs
 
   RUN mkdir -p /cache/config /cache/db /logs
 
