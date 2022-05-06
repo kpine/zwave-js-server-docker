@@ -3,6 +3,14 @@ name: Build and Push Test Images
 on:
   workflow_dispatch:
     inputs:
+      build-target:
+        description: Build Target
+        required: true
+        default: '+test'
+        type: choice
+        options:
+        - '+test'
+        - '+all'
       zwave-js-version:
         description: Z-Wave JS version
         required: true
@@ -39,11 +47,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: +test
-        run: earthly --ci +test --ZWAVE_JS_VERSION=${{ github.event.inputs.zwave-js-version }} --ZWAVE_JS_SERVER_VERSION=${{ github.event.inputs.zwave-js-server-version }}
+      - name: Build Images
+        run: earthly --ci ${{ github.event.inputs.build-target }} --ZWAVE_JS_VERSION=${{ github.event.inputs.zwave-js-version }} --ZWAVE_JS_SERVER_VERSION=${{ github.event.inputs.zwave-js-server-version }}
 
       - name: Push to Docker Hub
-        run: earthly --ci --push +test --ZWAVE_JS_VERSION=${{ github.event.inputs.zwave-js-version }} --ZWAVE_JS_SERVER_VERSION=${{ github.event.inputs.zwave-js-server-version }}
+        run: earthly --ci --push ${{ github.event.inputs.build-target }} --ZWAVE_JS_VERSION=${{ github.event.inputs.zwave-js-version }} --ZWAVE_JS_SERVER_VERSION=${{ github.event.inputs.zwave-js-server-version }}
 
       - name: Push to GitHub Container Registry
-        run: earthly --ci --push +test --REGISTRY=ghcr.io --ZWAVE_JS_VERSION=${{ github.event.inputs.zwave-js-version }} --ZWAVE_JS_SERVER_VERSION=${{ github.event.inputs.zwave-js-server-version }}
+        run: earthly --ci --push ${{ github.event.inputs.build-target }} --REGISTRY=ghcr.io --ZWAVE_JS_VERSION=${{ github.event.inputs.zwave-js-version }} --ZWAVE_JS_SERVER_VERSION=${{ github.event.inputs.zwave-js-server-version }}
