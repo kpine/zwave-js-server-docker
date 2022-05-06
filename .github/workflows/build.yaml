@@ -55,9 +55,9 @@ jobs:
         run: earthly --ci ${{ github.event.inputs.build-target }} --ZWAVE_JS_VERSION=${{ github.event.inputs.zwave-js-version }} --ZWAVE_JS_SERVER_VERSION=${{ github.event.inputs.zwave-js-server-version }}
 
       - name: Push to Docker Hub
+        if: github.event.inputs.push == 'true'
         run: earthly --ci --push ${{ github.event.inputs.build-target }} --ZWAVE_JS_VERSION=${{ github.event.inputs.zwave-js-version }} --ZWAVE_JS_SERVER_VERSION=${{ github.event.inputs.zwave-js-server-version }}
-        if: github.event.inputs.push
 
       - name: Push to GitHub Container Registry
+        if: github.event.inputs.push == 'true'
         run: earthly --ci --push ${{ github.event.inputs.build-target }} --REGISTRY=ghcr.io --ZWAVE_JS_VERSION=${{ github.event.inputs.zwave-js-version }} --ZWAVE_JS_SERVER_VERSION=${{ github.event.inputs.zwave-js-server-version }}
-        if: github.event.inputs.push
