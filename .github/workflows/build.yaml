@@ -17,6 +17,10 @@ on:
       zwave-js-server-version:
         description: Z-Wave JS Server version
         required: true
+      push:
+        description: Push image to registries
+        required: true
+        type: boolean
 
 jobs:
   build:
