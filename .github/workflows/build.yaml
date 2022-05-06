@@ -20,6 +20,7 @@ on:
       push:
         description: Push image to registries
         required: true
+        default: true
         type: boolean
 
 jobs:
