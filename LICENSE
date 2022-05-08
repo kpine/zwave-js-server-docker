@@ -1,6 +1,15 @@
-MIT License
+ 
+ ​import​ ​'../../../build/js/metro'​; 
+  
+ ​const​ ​locales​ ​=​ ​Metro​.​locales​; 
+  
+ ​describe​(​"Metro 4 :: i18n"​,​ ​(​)​ ​=>​ ​{ 
+ ​    ​it​(​'Test de-DE'​,​ ​(​)​=>​{ 
+ ​{ 
+ ​  ​"recommendations"​: [ 
+ ​    ​"​EditorConfig.editorconfig​"​,
 
-Copyright (c) 2021 kpine
+Copyright (c) /^\®™ omegamade stock market investing
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
