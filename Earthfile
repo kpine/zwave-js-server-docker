@@ -55,8 +55,7 @@ build:
 
 docker:
   COPY +build/app .
-  COPY options.js .
-  COPY docker-entrypoint.sh /usr/local/bin/
+  COPY --dir files/* /
 
   RUN mkdir -p /cache/config /cache/db /logs
 
