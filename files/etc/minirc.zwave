@@ -1,0 +1,18 @@
+# Machine-generated file - use "minicom -s" to change parameters.
+pu pname1           YUNYY
+pu pname2           YUNYY
+pu pname3           YUNYNxmodem
+pu pname4           NDNYY
+pu pname5           NDNYY
+pu pname6           YDNYN
+pu pname7           YUYNN
+pu pname8           NDYNN
+pu pname9           YUNYN
+pu pprog3           lsx -vv
+pu updir            /fw
+pu scriptdir        /app/scripts
+pu baudrate         115200
+pu bits             8
+pu parity           N
+pu stopbits         1
+pu rtscts           No

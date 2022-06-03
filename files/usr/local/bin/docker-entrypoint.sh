@@ -3,7 +3,7 @@ set -e
 
 if [ -z "$1" ]; then
   if [ ! -c "${USB_PATH}" ]; then
-    echo "USB path \"${USB_PATH}\" does not exist or is not a character device"
+    echo "USB path \"${USB_PATH}\" does not exist or is not a valid serial device"
     exit 1
   fi
 

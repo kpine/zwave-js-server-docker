@@ -57,7 +57,16 @@ docker:
   COPY +build/app .
   COPY --dir files/* /
 
-  RUN mkdir -p /cache/config /cache/db /logs
+  RUN mkdir -p \
+        /cache/config \
+        /cache/db \
+        /fw \
+        /logs
+
+  RUN apk add --no-cache \
+        minicom \
+   && apk add --no-cache --repository=https://dl-cdn.alpinelinux.org/alpine/edge/testing \
+        lrzsz
 
   ARG EARTHLY_GIT_SHORT_HASH
   ARG VERSION="$ZWAVE_JS_SERVER_VERSION-$ZWAVE_JS_VERSION"
