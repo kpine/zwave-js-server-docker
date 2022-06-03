@@ -20,6 +20,8 @@ RUN npm config set \
       fetch-retry-maxtimeout 600000 \
       cache-min 360
 
+ARG ZWAVE_JS_VERSION=latest
+ARG ZWAVE_JS_SERVER_VERSION=latest
 ARG ZWAVE_JS_PACKAGE=zwave-js@${ZWAVE_JS_VERSION}
 ARG ZWAVE_JS_SERVER_PACKAGE=@zwave-js/server@${ZWAVE_JS_SERVER_VERSION}
 ARG NPM_INSTALL_EXTRA_FLAGS=
