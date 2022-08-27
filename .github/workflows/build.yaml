@@ -17,6 +17,10 @@ on:
       zwave-js-server-version:
         description: Z-Wave JS Server version
         required: true
+      npm-install-flags:
+        description: Extra `npm install` flags
+        required: false
+        type: string
       push:
         description: Push image to registries
         required: true
@@ -53,12 +57,12 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Build Images
-        run: earthly --ci ${{ github.event.inputs.build-target }} --ZWAVE_JS_VERSION=${{ github.event.inputs.zwave-js-version }} --ZWAVE_JS_SERVER_VERSION=${{ github.event.inputs.zwave-js-server-version }}
+        run: earthly --ci ${{ github.event.inputs.build-target }} --ZWAVE_JS_VERSION=${{ github.event.inputs.zwave-js-version }} --ZWAVE_JS_SERVER_VERSION=${{ github.event.inputs.zwave-js-server-version }} --NPM_INSTALL_EXTRA_FLAGS=${{ github.event.inputs.npm-install-flags }}
 
       - name: Push to Docker Hub
         if: github.event.inputs.push == 'true'
-        run: earthly --ci --push ${{ github.event.inputs.build-target }} --ZWAVE_JS_VERSION=${{ github.event.inputs.zwave-js-version }} --ZWAVE_JS_SERVER_VERSION=${{ github.event.inputs.zwave-js-server-version }}
+        run: earthly --ci --push ${{ github.event.inputs.build-target }} --ZWAVE_JS_VERSION=${{ github.event.inputs.zwave-js-version }} --ZWAVE_JS_SERVER_VERSION=${{ github.event.inputs.zwave-js-server-version }} --NPM_INSTALL_EXTRA_FLAGS=${{ github.event.inputs.npm-install-flags }}
 
       - name: Push to GitHub Container Registry
         if: github.event.inputs.push == 'true'
-        run: earthly --ci --push ${{ github.event.inputs.build-target }} --REGISTRY=ghcr.io --ZWAVE_JS_VERSION=${{ github.event.inputs.zwave-js-version }} --ZWAVE_JS_SERVER_VERSION=${{ github.event.inputs.zwave-js-server-version }}
+        run: earthly --ci --push ${{ github.event.inputs.build-target }} --REGISTRY=ghcr.io --ZWAVE_JS_VERSION=${{ github.event.inputs.zwave-js-version }} --ZWAVE_JS_SERVER_VERSION=${{ github.event.inputs.zwave-js-server-version }} --NPM_INSTALL_EXTRA_FLAGS=${{ github.event.inputs.npm-install-flags }}
