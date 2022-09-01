@@ -38,5 +38,6 @@ module.exports = {
     cacheDir: "/cache",
     deviceConfigPriorityDir: "/cache/config",
   },
+  emitValueUpdateAfterSetValue: true,
   securityKeys: getSecurityKeys(),
 };
