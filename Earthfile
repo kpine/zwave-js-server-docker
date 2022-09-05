@@ -1,6 +1,6 @@
 VERSION 0.6
 
-FROM alpine:3.15
+FROM alpine:3.16
 
 ARG ZWAVE_JS_VERSION=latest
 ARG ZWAVE_JS_SERVER_VERSION=latest
