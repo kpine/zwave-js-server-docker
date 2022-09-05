@@ -140,4 +140,4 @@ If you use a client that does not support its own API key, and you are a non-com
 
 If you have your own key, i.e. you are a commercial user, you can set `FIRMWARE_UPDATE_API_KEY` to that key.
 
-If the `FIRMWARE_UPDATE_API_KEY` environment variable is empty (the default), no API key will be configured. In that case a client application would be responsible for setting it, otherwise the firmware update service will not be functional.
+If the `FIRMWARE_UPDATE_API_KEY` environment variable is empty (the default), no API key will be configured. In that case a client application would be responsible for setting it, otherwise the firmware update service may not be functional or incur more restrictive rate-limiting.
