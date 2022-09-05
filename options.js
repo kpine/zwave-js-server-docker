@@ -32,6 +32,24 @@ function getSecurityKeys() {
   return keys;
 }
 
+function getApiKeys() {
+  apiKeys = {};
+
+  fw_key = process.env.FIRMWARE_UPDATE_API_KEY;
+
+  if (!fw_key) {
+    return {};
+  }
+
+  if (fw_key == "-") {
+    // This API key is valid only for non-commercial users. If you are a commercial user
+    // you **must** request your own key: https://github.com/zwave-js/firmware-updates#api-keys
+    fw_key = "1e1cf4e7735a3cbf59e9349ba9d936caec74466578fd0fc8b516059474cdc5a41c0dd69b";
+  }
+
+  return { firmwareUpdateService: fw_key };
+}
+
 module.exports = {
   logConfig: getLogConfig(),
   storage: {
@@ -40,4 +58,5 @@ module.exports = {
   },
   emitValueUpdateAfterSetValue: true,
   securityKeys: getSecurityKeys(),
+  apiKeys: getApiKeys(),
 };

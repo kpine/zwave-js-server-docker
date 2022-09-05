@@ -70,6 +70,7 @@ services:
 - `S2_UNAUTHENTICATED_KEY`: The network key for the S2 Unauthenticated security class.
 - `S0_LEGACY_KEY`: The network key for the S0 (Legacy) security class. This replaces the deprecated `NETWORK_KEY` variable.
 - `USB_PATH`: The device path of the Z-Wave USB controller. Defaults to `/dev/zwave`. Use of this variable is unnecessary if the controller device path is mapped from the host as `/dev/zwave`.
+- `FIRMWARE_UPDATE_API_KEY`: The API key used to access the Z-Wave JS Firmware Update Service. By default, no key is configured. Usually it is not necessary to configure this, unless you are a commercial user. See the [Firmware Update API Key](#firmware-update-api-key) section for details.
 
 ### Directories
 
@@ -127,3 +128,16 @@ Z-Wave JS uses directories as lock files to prevent the cache files from being m
 The environment variable tells Z-Wave JS to store the lock files in the directory `/run/lock/zwave-js`. The volume entry maps the hosts `/run/lock/zwave-js` directory, which is a tmpfs, to the container directory with the same name. The end result is that the lock files created in the container are located in the tmpfs of the host. The path `/run/lock` is usually mounted as a tmpfs. Another candidate might be `/tmp/zwave-js`.
 
 Note that locating the locks in a central place on the host ensures that multiple containers with the same configuration will be aware of the locks. However, if Z-Wave JS is run in another instance without the same lock directory configuration, it will not see the locks and this will bypass the lock protections, allowing for the chance that the cache will be corrupted. When the locks are located in the default location, all instances of Z-Wave JS using the default configuration will see the locks. So use this feature with care.
+
+### Firmware Update API Key
+
+Z-Wave JS has an [online web service](https://github.com/zwave-js/firmware-updates/) that provides information about firmware updates for your devices. Use of this service requires an API key. The Z-Wave JS organization has provided this project with its own key. This key is only valid when used for non-commercial purposes, and is not permitted for commercial usage.
+If you are a commercial organization using this application, you must [request](https://github.com/zwave-js/firmware-updates#api-keys) and configure your own key.
+
+If you are using the Z-Wave integration with Home Assistant, you do not need to enable or install an API key. The integration provides the key when accessing the firmware update APIs. This is true for any client application that makes use of the firmware update APIs with its own keys.
+
+If you use a client that does not support its own API key, and you are a non-commercial user, you can enable the built-in key by setting the `FIRMWARE_UPDATE_API_KEY` to `-`. By doing so you agree that you are not a commercial user.
+
+If you have your own key, i.e. you are a commercial user, you can set `FIRMWARE_UPDATE_API_KEY` to that key.
+
+If the `FIRMWARE_UPDATE_API_KEY` environment variable is empty (the default), no API key will be configured. In that case a client application would be responsible for setting it, otherwise the firmware update service will not be functional.
