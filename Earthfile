@@ -7,6 +7,10 @@ ARG ZWAVE_JS_SERVER_VERSION=latest
 
 WORKDIR /app
 
+RUN echo "@edge https://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories \
+  && apk add --no-cache \
+      nodejs@edge
+
 all:
   BUILD \
     --platform=linux/amd64 \
@@ -27,15 +31,13 @@ build:
         git \
         linux-headers \
         make \
-        nodejs \
         npm \
         python3
 
   RUN npm config set \
         fetch-retries 5 \
         fetch-retry-mintimeout 100000 \
-        fetch-retry-maxtimeout 600000 \
-        cache-min 360
+        fetch-retry-maxtimeout 600000
 
   ARG ZWAVE_JS_PACKAGE=zwave-js@$ZWAVE_JS_VERSION
   ARG ZWAVE_JS_SERVER_PACKAGE=@zwave-js/server@$ZWAVE_JS_SERVER_VERSION
@@ -44,11 +46,11 @@ build:
   # Prebuilt binaries for node serialport and Alpine are broken, so we
   # rebuild from source:
   #   https://github.com/serialport/node-serialport/issues/2438
-  RUN npm install \
+  RUN npm install --prefer-offline \
         $NPM_INSTALL_EXTRA_FLAGS \
         $ZWAVE_JS_SERVER_PACKAGE \
         $ZWAVE_JS_PACKAGE \
-    && npm rebuild --build-from-source @serialport/bindings-cpp
+    && npm rebuild --prefer-offline --build-from-source @serialport/bindings-cpp
 
   SAVE ARTIFACT /app /app
 
@@ -58,8 +60,7 @@ docker:
   COPY options.js /app
 
   RUN apk add --no-cache \
-        jq \
-        nodejs
+        jq
 
   RUN mkdir -p /cache/config /cache/db /logs
 
