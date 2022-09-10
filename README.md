@@ -53,11 +53,11 @@ services:
       S2_UNAUTHENTICATED_KEY: "2FAB1A27E19AE9C7CC6D18ACEB90C357"
       S0_LEGACY_KEY: "17DFB0C1BED4CABFF54E4B5375E257B3"
     devices:
-      - '/dev/serial/by-id/usb-0658_0200-if00:/dev/zwave'
+      - "/dev/serial/by-id/usb-0658_0200-if00:/dev/zwave"
     volumes:
       - ./cache:/cache
     ports:
-      - '3000:3000'
+      - "3000:3000"
 ```
 
 ### Environment variables
@@ -71,6 +71,7 @@ services:
 - `S0_LEGACY_KEY`: The network key for the S0 (Legacy) security class. This replaces the deprecated `NETWORK_KEY` variable.
 - `USB_PATH`: The device path of the Z-Wave USB controller. Defaults to `/dev/zwave`. Use of this variable is unnecessary if the controller device path is mapped from the host as `/dev/zwave`.
 - `FIRMWARE_UPDATE_API_KEY`: The API key used to access the Z-Wave JS Firmware Update Service. By default, no key is configured. Usually it is not necessary to configure this, unless you are a commercial user. See the [Firmware Update API Key](#firmware-update-api-key) section for details.
+- `ENABLE_DNS_SD`: Set this to `true` to enable DNS Service Discovery. The default is disabled. Enabling this only works if you are using host networking.
 
 ### Directories
 
@@ -119,10 +120,10 @@ Z-Wave JS performs a soft-reset (restart) of the Z-Wave controller during startu
 Z-Wave JS uses directories as lock files to prevent the cache files from being modified by multiple concurrent processes; this helps prevent against cache corruption. These directories are located in the cache directory, next to the actual cache files. The locking technique updates the `mtime` (Modified time) of the lock file every ~1 second. If your storage media is sensitive to frequent writes, such as an SD card, you may want to relocate the lock files to another directory, such as a tmpfs. To relocate the cache files, set the `ZWAVEJS_LOCK_DIRECTORY` environment variable to an alternate path, preferably some kind of tmpfs on the host. Here's an example snippet for a compose file:
 
 ```yaml
-    environment:
-      ZWAVEJS_LOCK_DIRECTORY: "/run/lock/zwave-js"
-    volumes:
-      - /run/lock/zwave-js:/run/lock/zwave-js
+environment:
+  ZWAVEJS_LOCK_DIRECTORY: "/run/lock/zwave-js"
+volumes:
+  - /run/lock/zwave-js:/run/lock/zwave-js
 ```
 
 The environment variable tells Z-Wave JS to store the lock files in the directory `/run/lock/zwave-js`. The volume entry maps the hosts `/run/lock/zwave-js` directory, which is a tmpfs, to the container directory with the same name. The end result is that the lock files created in the container are located in the tmpfs of the host. The path `/run/lock` is usually mounted as a tmpfs. Another candidate might be `/tmp/zwave-js`.

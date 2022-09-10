@@ -69,6 +69,7 @@ docker:
   ENV USB_PATH=/dev/zwave
   ENV LOGFILENAME=/logs/zwave_%DATE%.log
   ENV ZWAVEJS_EXTERNAL_CONFIG=/cache/db
+  ENV ENABLE_DNS_SD=false
 
   ARG BUILD_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
   ARG EARTHLY_GIT_SHORT_HASH

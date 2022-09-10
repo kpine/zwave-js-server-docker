@@ -11,7 +11,12 @@ if [ -z "$1" ]; then
     echo "NETWORK_KEY is deprecated, use S0_LEGACY_KEY instead"
   fi
 
-  set -- zwave-server --config options.js "${USB_PATH}"
+  set -- zwave-server "${USB_PATH}" --config options.js
+  
+  if [ "${ENABLE_DNS_SD}" != "true" ]; then
+    set -- "$@" --disable-dns-sd
+  fi
+
   echo "Starting zwave-server:" "$@"
 elif [ "$1" = "server" ]; then
   shift
