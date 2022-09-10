@@ -117,13 +117,15 @@ Z-Wave JS performs a soft-reset (restart) of the Z-Wave controller during startu
 
 ### Cache Lock Files
 
-Z-Wave JS uses directories as lock files to prevent the cache files from being modified by multiple concurrent processes; this helps prevent against cache corruption. These directories are located in the cache directory, next to the actual cache files. The locking technique updates the `mtime` (Modified time) of the lock file every ~1 second. If your storage media is sensitive to frequent writes, such as an SD card, you may want to relocate the lock files to another directory, such as a tmpfs. To relocate the cache files, set the `ZWAVEJS_LOCK_DIRECTORY` environment variable to an alternate path, preferably some kind of tmpfs on the host. Here's an example snippet for a compose file:
+Z-Wave JS uses directories as lock files to prevent the cache files from being modified by multiple concurrent processes; this helps prevent against cache corruption. These directories are located in the cache directory, next to the actual cache files. The locking technique updates the `mtime` (Modified time) of the lock file every ~1 second. If your storage media is sensitive to frequent writes, such as an SD card, you may want to relocate the lock files to another directory, such as a tmpfs. To relocate the cache files, set the `ZWAVEJS_LOCK_DIRECTORY` environment variable to an alternate path, preferably some kind of tmpfs on the host. Here is an extract of a compose file:
 
 ```yaml
-environment:
-  ZWAVEJS_LOCK_DIRECTORY: "/run/lock/zwave-js"
-volumes:
-  - /run/lock/zwave-js:/run/lock/zwave-js
+services:
+  zjs:
+    environment:
+      ZWAVEJS_LOCK_DIRECTORY: "/run/lock/zwave-js"
+    volumes:
+      - /run/lock/zwave-js:/run/lock/zwave-js
 ```
 
 The environment variable tells Z-Wave JS to store the lock files in the directory `/run/lock/zwave-js`. The volume entry maps the hosts `/run/lock/zwave-js` directory, which is a tmpfs, to the container directory with the same name. The end result is that the lock files created in the container are located in the tmpfs of the host. The path `/run/lock` is usually mounted as a tmpfs. Another candidate might be `/tmp/zwave-js`.
