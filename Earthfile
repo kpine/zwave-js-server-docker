@@ -71,8 +71,12 @@ docker:
   ENV ZWAVEJS_EXTERNAL_CONFIG=/cache/db
 
   ARG BUILD_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-  ARG VERSION="$ZWAVE_JS_SERVER_VERSION-$ZWAVE_JS_VERSION"
   ARG EARTHLY_GIT_SHORT_HASH
+  ARG VERSION="$ZWAVE_JS_SERVER_VERSION-$ZWAVE_JS_VERSION"
+
+  ENV USERAGENT_NAME=kpine/zwave-js-server #"$REPOSITORY"
+  ENV USERAGENT_VERSION="$VERSION-$EARTHLY_GIT_SHORT_HASH"
+
   LABEL org.opencontainers.image.created=$BUILD_DATE
   LABEL org.opencontainers.image.description="A standalone Z-Wave JS Server"
   LABEL org.opencontainers.image.revision=$EARTHLY_GIT_SHORT_HASH

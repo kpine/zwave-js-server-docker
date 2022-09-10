@@ -1,5 +1,5 @@
 function getLogConfig() {
-  config = {
+  let config = {
     forceConsole: true,
   };
 
@@ -22,7 +22,7 @@ function getSecurityKeys() {
     S0_Legacy: process.env.S0_LEGACY_KEY || process.env.NETWORK_KEY,
   };
 
-  keys = {};
+  let keys = {};
   for (const [name, key] of Object.entries(env_keys)) {
     if (key) {
       keys[name] = key;
@@ -33,21 +33,25 @@ function getSecurityKeys() {
 }
 
 function getApiKeys() {
-  apiKeys = {};
-
-  fw_key = process.env.FIRMWARE_UPDATE_API_KEY;
+  let fw_key = process.env.FIRMWARE_UPDATE_API_KEY;
 
   if (!fw_key) {
-    return {};
+    return undefined;
   }
 
-  if (fw_key == "-") {
+  if (fw_key === "-") {
     // This API key is valid only for non-commercial users. If you are a commercial user
     // you **must** request your own key: https://github.com/zwave-js/firmware-updates#api-keys
     fw_key = "1e1cf4e7735a3cbf59e9349ba9d936caec74466578fd0fc8b516059474cdc5a41c0dd69b";
   }
 
   return { firmwareUpdateService: fw_key };
+}
+
+function getUserAgent() {
+  const name = process.env.USERAGENT_NAME;
+  const version = process.env.USERAGENT_VERSION;
+  return name && version ? { [name]: version } : undefined;
 }
 
 module.exports = {
@@ -59,4 +63,5 @@ module.exports = {
   emitValueUpdateAfterSetValue: true,
   securityKeys: getSecurityKeys(),
   apiKeys: getApiKeys(),
+  userAgent: getUserAgent(),
 };
