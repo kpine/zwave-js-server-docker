@@ -60,7 +60,6 @@ module.exports = {
     cacheDir: "/cache",
     deviceConfigPriorityDir: "/cache/config",
   },
-  emitValueUpdateAfterSetValue: true,
   securityKeys: getSecurityKeys(),
   apiKeys: getApiKeys(),
   userAgent: getUserAgent(),
