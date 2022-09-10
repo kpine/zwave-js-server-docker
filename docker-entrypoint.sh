@@ -8,7 +8,8 @@ if [ -z "$1" ]; then
   fi
 
   if [ -n "${NETWORK_KEY}" ]; then
-    echo "NETWORK_KEY is deprecated, use S0_LEGACY_KEY instead"
+    echo "NETWORK_KEY has been removed, use S0_LEGACY_KEY instead"
+    exit 1
   fi
 
   set -- zwave-server "${USB_PATH}" --config options.js

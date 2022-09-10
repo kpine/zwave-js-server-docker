@@ -68,7 +68,7 @@ services:
 - `S2_ACCESS_CONTROL_KEY`: The network key for the S2 Access Control security class.
 - `S2_AUTHENTICATED_KEY`: The network key for the S2 Authenticated security class.
 - `S2_UNAUTHENTICATED_KEY`: The network key for the S2 Unauthenticated security class.
-- `S0_LEGACY_KEY`: The network key for the S0 (Legacy) security class. This replaces the deprecated `NETWORK_KEY` variable.
+- `S0_LEGACY_KEY`: The network key for the S0 (Legacy) security class.
 - `USB_PATH`: The device path of the Z-Wave USB controller. Defaults to `/dev/zwave`. Use of this variable is unnecessary if the controller device path is mapped from the host as `/dev/zwave`.
 - `FIRMWARE_UPDATE_API_KEY`: The API key used to access the Z-Wave JS Firmware Update Service. By default, no key is configured. Usually it is not necessary to configure this, unless you are a commercial user. See the [Firmware Update API Key](#firmware-update-api-key) section for details.
 - `ENABLE_DNS_SD`: Set this to `true` to enable DNS Service Discovery. The default is disabled. Enabling this only works if you are using host networking.
