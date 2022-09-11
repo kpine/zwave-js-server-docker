@@ -7,9 +7,8 @@ ARG ZWAVE_JS_SERVER_VERSION=latest
 
 WORKDIR /app
 
-RUN echo "@edge https://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories \
-  && apk add --no-cache \
-      nodejs@edge
+RUN apk add --no-cache \
+      nodejs
 
 all:
   BUILD \
