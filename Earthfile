@@ -58,9 +58,6 @@ docker:
   COPY docker-entrypoint.sh /usr/local/bin/
   COPY options.js /app
 
-  RUN apk add --no-cache \
-        jq
-
   RUN mkdir -p /cache/config /cache/db /logs
 
   ENV NODE_ENV=production
