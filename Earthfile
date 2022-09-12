@@ -60,19 +60,17 @@ docker:
 
   RUN mkdir -p /cache/config /cache/db /logs
 
-  ENV NODE_ENV=production
-  ENV PATH=/app/node_modules/.bin:$PATH
-  ENV USB_PATH=/dev/zwave
-  ENV LOGFILENAME=/logs/zwave_%DATE%.log
-  ENV ZWAVEJS_EXTERNAL_CONFIG=/cache/db
-  ENV ENABLE_DNS_SD=false
-
   ARG BUILD_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
   ARG EARTHLY_GIT_SHORT_HASH
   ARG VERSION="$ZWAVE_JS_SERVER_VERSION-$ZWAVE_JS_VERSION"
 
-  ENV USERAGENT_NAME=kpine/zwave-js-server #"$REPOSITORY"
-  ENV USERAGENT_VERSION="$VERSION-$EARTHLY_GIT_SHORT_HASH"
+  ENV BUILD_VERSION="$VERSION-$EARTHLY_GIT_SHORT_HASH"
+  ENV ENABLE_DNS_SD=false
+  ENV LOGFILENAME=/logs/zwave_%DATE%.log
+  ENV NODE_ENV=production
+  ENV PATH=/app/node_modules/.bin:$PATH
+  ENV USB_PATH=/dev/zwave
+  ENV ZWAVEJS_EXTERNAL_CONFIG=/cache/db
 
   LABEL org.opencontainers.image.created=$BUILD_DATE
   LABEL org.opencontainers.image.description="A standalone Z-Wave JS Server"

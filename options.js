@@ -48,12 +48,6 @@ function getApiKeys() {
   return { firmwareUpdateService: fw_key };
 }
 
-function getUserAgent() {
-  const name = process.env.USERAGENT_NAME;
-  const version = process.env.USERAGENT_VERSION;
-  return name && version ? { [name]: version } : undefined;
-}
-
 module.exports = {
   logConfig: getLogConfig(),
   storage: {
@@ -62,5 +56,5 @@ module.exports = {
   },
   securityKeys: getSecurityKeys(),
   apiKeys: getApiKeys(),
-  userAgent: getUserAgent(),
+  userAgent: { "kpine/zwave-js-server": process.env.BUILD_VERSION || "unknown" },
 };
