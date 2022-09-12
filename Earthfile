@@ -52,6 +52,7 @@ build:
     && npm rebuild --prefer-offline --build-from-source @serialport/bindings-cpp
 
   SAVE ARTIFACT /app
+  SAVE IMAGE --cache-hint
 
 docker:
   COPY +build/app .
@@ -90,6 +91,7 @@ docker:
   VOLUME /cache
   EXPOSE 3000
   ENTRYPOINT ["docker-entrypoint.sh"]
+  SAVE IMAGE --cache-hint
 
 docker-test:
   FROM +docker
