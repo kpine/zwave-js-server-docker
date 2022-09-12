@@ -6,11 +6,11 @@ on:
       build-target:
         description: Build Target
         required: true
-        default: '+test'
+        default: "+test"
         type: choice
         options:
-        - '+test'
-        - '+all'
+          - "+test"
+          - "+all"
       zwave-js-version:
         description: Z-Wave JS version
         required: true
