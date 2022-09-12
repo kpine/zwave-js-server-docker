@@ -45,7 +45,7 @@ build:
   # Prebuilt binaries for node serialport and Alpine are broken, so we
   # rebuild from source:
   #   https://github.com/serialport/node-serialport/issues/2438
-  RUN npm install --prefer-offline \
+  RUN npm install \
         $NPM_INSTALL_EXTRA_FLAGS \
         $ZWAVE_JS_SERVER_PACKAGE \
         $ZWAVE_JS_PACKAGE \
@@ -87,13 +87,15 @@ docker:
 
 docker-test:
   FROM +docker
+  ARG EARTHLY_GIT_SHORT_HASH
   ARG REGISTRY=docker.io
   ARG REPOSITORY=kpine/zwave-js-server
-  SAVE IMAGE --push $REGISTRY/$REPOSITORY:rc
+  SAVE IMAGE --push $REGISTRY/$REPOSITORY:rc-$EARTHLY_GIT_SHORT_HASH $REGISTRY/$REPOSITORY:rc
 
 docker-release:
   FROM +docker
+  ARG EARTHLY_GIT_SHORT_HASH
   ARG TAG="$ZWAVE_JS_SERVER_VERSION-$ZWAVE_JS_VERSION"
   ARG REGISTRY=docker.io
   ARG REPOSITORY=kpine/zwave-js-server
-  SAVE IMAGE --push $REGISTRY/$REPOSITORY:$TAG $REGISTRY/$REPOSITORY:latest
+  SAVE IMAGE --push $REGISTRY/$REPOSITORY:$TAG-$EARTHLY_GIT_SHORT_HASH $REGISTRY/$REPOSITORY:$TAG $REGISTRY/$REPOSITORY:latest
