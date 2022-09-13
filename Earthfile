@@ -91,7 +91,6 @@ docker:
   VOLUME /cache
   EXPOSE 3000
   ENTRYPOINT ["docker-entrypoint.sh"]
-  SAVE IMAGE --cache-hint
 
 docker-test:
   FROM +docker
