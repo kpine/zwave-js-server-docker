@@ -5,8 +5,6 @@ FROM alpine:3.16
 ARG ZWAVE_JS_VERSION=latest
 ARG ZWAVE_JS_SERVER_VERSION=latest
 
-WORKDIR /app
-
 RUN apk add --no-cache \
       nodejs
 
@@ -41,6 +39,8 @@ build:
   ARG ZWAVE_JS_PACKAGE=zwave-js@$ZWAVE_JS_VERSION
   ARG ZWAVE_JS_SERVER_PACKAGE=@zwave-js/server@$ZWAVE_JS_SERVER_VERSION
   ARG NPM_INSTALL_EXTRA_FLAGS
+
+  WORKDIR /app
 
   # Prebuilt binaries for node serialport and Alpine are broken, so we
   # rebuild from source:
@@ -87,6 +87,7 @@ docker:
   LABEL org.opencontainers.image.title="Z-Wave JS Server"
   LABEL org.opencontainers.image.version=$VERSION
 
+  WORKDIR /app
   VOLUME /cache
   EXPOSE 3000
   ENTRYPOINT ["docker-entrypoint.sh"]
