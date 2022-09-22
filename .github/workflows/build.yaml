@@ -60,9 +60,13 @@ jobs:
         run: earthly --use-inline-cache --no-output --strict ${{ github.event.inputs.build-target }} --ZWAVE_JS_VERSION=${{ github.event.inputs.zwave-js-version }} --ZWAVE_JS_SERVER_VERSION=${{ github.event.inputs.zwave-js-server-version }} --NPM_INSTALL_EXTRA_FLAGS=${{ github.event.inputs.npm-install-flags }}
 
       - name: Push to Docker Hub
-        if: github.event.inputs.push == 'true'
+        if: github.event.inputs.push == 'true' && github.event.inputs.build-target == '+all'
         run: earthly --use-inline-cache --no-output --strict --push ${{ github.event.inputs.build-target }} --ZWAVE_JS_VERSION=${{ github.event.inputs.zwave-js-version }} --ZWAVE_JS_SERVER_VERSION=${{ github.event.inputs.zwave-js-server-version }} --NPM_INSTALL_EXTRA_FLAGS=${{ github.event.inputs.npm-install-flags }}
 
       - name: Push to GitHub Container Registry
-        if: github.event.inputs.push == 'true'
+        if: github.event.inputs.push == 'true' && github.event.inputs.build-target == '+all'
         run: earthly --use-inline-cache --no-output --strict --push ${{ github.event.inputs.build-target }} --REGISTRY=ghcr.io --ZWAVE_JS_VERSION=${{ github.event.inputs.zwave-js-version }} --ZWAVE_JS_SERVER_VERSION=${{ github.event.inputs.zwave-js-server-version }} --NPM_INSTALL_EXTRA_FLAGS=${{ github.event.inputs.npm-install-flags }}
+
+      - name: Push to GitHub Container Registry
+        if: github.event.inputs.push == 'true' && github.event.inputs.build-target == '+test'
+        run: earthly --use-inline-cache --no-output --strict --push ${{ github.event.inputs.build-target }} --REGISTRY=ghcr.io --REPOSITORY=${{ secrets.TEST_REPO }} --ZWAVE_JS_VERSION=${{ github.event.inputs.zwave-js-version }} --ZWAVE_JS_SERVER_VERSION=${{ github.event.inputs.zwave-js-server-version }} --NPM_INSTALL_EXTRA_FLAGS=${{ github.event.inputs.npm-install-flags }}
