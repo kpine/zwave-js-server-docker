@@ -51,18 +51,18 @@ build:
         $ZWAVE_JS_PACKAGE \
     && npm rebuild --prefer-offline --build-from-source @serialport/bindings-cpp
 
-  SAVE ARTIFACT /app /app
+  SAVE ARTIFACT /app
 
 docker:
-  COPY +build/app /app
+  COPY +build/app .
+  COPY options.js .
   COPY docker-entrypoint.sh /usr/local/bin/
-  COPY options.js /app
 
   RUN mkdir -p /cache/config /cache/db /logs
 
-  ARG BUILD_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
   ARG EARTHLY_GIT_SHORT_HASH
   ARG VERSION="$ZWAVE_JS_SERVER_VERSION-$ZWAVE_JS_VERSION"
+  ARG BUILD_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
   ENV BUILD_VERSION="$VERSION-$EARTHLY_GIT_SHORT_HASH"
   ENV ENABLE_DNS_SD=false
@@ -85,15 +85,24 @@ docker:
 
 docker-test:
   FROM +docker
+  ARG TAG_EXTRA=1
   ARG EARTHLY_GIT_SHORT_HASH
   ARG REGISTRY=docker.io
   ARG REPOSITORY=kpine/zwave-js-server
-  SAVE IMAGE --push $REGISTRY/$REPOSITORY:rc-$EARTHLY_GIT_SHORT_HASH $REGISTRY/$REPOSITORY:rc
+  IF [ "$TAG_EXTRA" = "1" ]
+    SAVE IMAGE --push $REGISTRY/$REPOSITORY:rc-$EARTHLY_GIT_SHORT_HASH
+  END
+  SAVE IMAGE --push $REGISTRY/$REPOSITORY:rc
 
 docker-release:
   FROM +docker
+  ARG TAG_EXTRA=1
   ARG EARTHLY_GIT_SHORT_HASH
   ARG TAG="$ZWAVE_JS_SERVER_VERSION-$ZWAVE_JS_VERSION"
   ARG REGISTRY=docker.io
   ARG REPOSITORY=kpine/zwave-js-server
-  SAVE IMAGE --push $REGISTRY/$REPOSITORY:$TAG-$EARTHLY_GIT_SHORT_HASH $REGISTRY/$REPOSITORY:$TAG $REGISTRY/$REPOSITORY:latest
+  IF [ "$TAG_EXTRA" = "1" ]
+    SAVE IMAGE --push $REGISTRY/$REPOSITORY:$TAG-$EARTHLY_GIT_SHORT_HASH
+  END
+  SAVE IMAGE --push $REGISTRY/$REPOSITORY:$TAG
+  SAVE IMAGE --push $REGISTRY/$REPOSITORY:latest

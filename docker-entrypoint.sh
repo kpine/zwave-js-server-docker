@@ -13,7 +13,7 @@ if [ -z "$1" ]; then
   fi
 
   set -- zwave-server "${USB_PATH}" --config options.js
-  
+
   if [ "${ENABLE_DNS_SD}" != "true" ]; then
     set -- "$@" --disable-dns-sd
   fi
