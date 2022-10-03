@@ -10,7 +10,6 @@ pu pname8           NDYNN
 pu pname9           YUNYN
 pu pprog3           lsx -vv
 pu updir            /fw
-pu scriptdir        /app/scripts
 pu baudrate         115200
 pu bits             8
 pu parity           N
