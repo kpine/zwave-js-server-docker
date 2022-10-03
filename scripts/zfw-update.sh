@@ -4,7 +4,7 @@
 set -euo pipefail
 
 DEFAULT_DEV_PATH=/dev/ttyUSB0
-DEFAULT_FW_DIR=/tmp
+DEFAULT_FW_DIR=/tmp/fw
 
 dev_path=${ZFWU_DEVICE_PATH:-${DEFAULT_DEV_PATH}}
 fw_dir=${ZFWU_FW_DIR:-${DEFAULT_FW_DIR}}
