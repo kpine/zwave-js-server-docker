@@ -2,7 +2,7 @@
 
 A minimal docker container for [zwave-js-server](https://github.com/zwave-js/zwave-js-server/). This container provides a usable zwave-js-server and nothing else. The zwave-js-server is a websocket application that hosts the [Z-Wave JS](https://github.com/zwave-js/node-zwave-js) driver software.
 
-For a more functional application that also provides the zwave-js-server, it is recommended to use [zwavejs2mqtt](https://github.com/zwave-js/zwavejs2mqtt/) instead.
+For a more functional application that also provides the zwave-js-server, use [Z-Wave JS UI](https://github.com/zwave-js/zwave-js-ui) instead.
 
 ## Docker Configuration
 
