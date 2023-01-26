@@ -31,16 +31,8 @@ elif [ "$1" = "flash" ]; then
     exit 1
   fi
 
-  shift
-  fw="${1-/fw/fw.gbl}"
-
-  if [ ! -f "${fw}" ]; then
-    echo "Firmware file \"${fw}\" does not exist"
-    exit 1
-  fi
-
-  echo "Flashing controller firmware with file \"${fw}\"..."
-  set -- flash "${USB_PATH}" "${fw}"
+  set -- flash "${USB_PATH}" "$@"
+  echo "Flashing controller firmware:" "$@"
 fi
 
 exec "$@"
