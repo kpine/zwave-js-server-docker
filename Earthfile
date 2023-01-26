@@ -40,6 +40,7 @@ build:
 
   ARG ZWAVE_JS_PACKAGE=zwave-js@$ZWAVE_JS_VERSION
   ARG ZWAVE_JS_SERVER_PACKAGE=@zwave-js/server@$ZWAVE_JS_SERVER_VERSION
+  ARG ZWAVE_JS_FLASH_PACKAGE=@zwave-js/flash@$ZWAVE_JS_VERSION
   ARG NPM_INSTALL_EXTRA_FLAGS
 
   # Prebuilt binaries for node serialport and Alpine are broken, so we
@@ -48,6 +49,7 @@ build:
   RUN npm install \
         $NPM_INSTALL_EXTRA_FLAGS \
         $ZWAVE_JS_SERVER_PACKAGE \
+        $ZWAVE_JS_FLASH_PACKAGE \
         $ZWAVE_JS_PACKAGE \
     && npm rebuild --prefer-offline --build-from-source @serialport/bindings-cpp
 
@@ -60,13 +62,7 @@ docker:
   RUN mkdir -p \
         /cache/config \
         /cache/db \
-        /fw \
         /logs
-
-  RUN apk add --no-cache \
-        minicom \
-   && apk add --no-cache --repository=https://dl-cdn.alpinelinux.org/alpine/edge/testing \
-        lrzsz
 
   ARG EARTHLY_GIT_SHORT_HASH
   ARG VERSION="$ZWAVE_JS_SERVER_VERSION-$ZWAVE_JS_VERSION"
