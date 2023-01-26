@@ -31,6 +31,7 @@ elif [ "$1" = "flash" ]; then
     exit 1
   fi
 
+  shift
   set -- flash "${USB_PATH}" "$@"
   echo "Flashing controller firmware:" "$@"
 fi
