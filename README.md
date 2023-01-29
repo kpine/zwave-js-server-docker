@@ -1,12 +1,12 @@
 # zwave-js-server-docker
 
-A minimal docker container for [zwave-js-server](https://github.com/zwave-js/zwave-js-server/). This container provides a usable zwave-js-server and nothing else. The zwave-js-server is a websocket application that hosts the [Z-Wave JS](https://github.com/zwave-js/node-zwave-js) driver software.
+A minimal docker container for [Z-Wave JS Server](https://github.com/zwave-js/zwave-js-server/). This container provides a usable Z-Wave JS Server and little else.
 
-For a more functional application that also provides the zwave-js-server, use [Z-Wave JS UI](https://github.com/zwave-js/zwave-js-ui) instead.
+For a more functional application that also provides the Server, use [Z-Wave JS UI](https://github.com/zwave-js/zwave-js-ui) instead.
 
 ## Docker Configuration
 
-Z-Wave JS (the driver) stores information about the Z-Wave network in a set of cache files. When the server restarts, the driver loads the network information from the cache. Without this information the network will not be fully usable right away. Therefore it is very important that the cache files are persisted between container restarts.
+The Z-Wave JS driver stores information about the Z-Wave network in a set of cache files. When the server restarts, the driver loads the network information from the cache. Without this information the network will not be fully usable right away. Therefore it is very important that the cache files are persisted between container restarts.
 
 The `docker run` examples below use an environment file to provide all of the Z-Wave network keys.
 
@@ -25,14 +25,14 @@ S0_LEGACY_KEY=17DFB0C1BED4CABFF54E4B5375E257B3
 $ docker volume create zjs-storage
 
 # starts the server and uses the volume as the persistent cache directory
-$ docker run -d -p 3000:3000 --name=zjs -v zjs-storage:/cache --env-file=.env --device "/dev/serial/by-id/usb-0658_0200-if00:/dev/zwave" kpine/zwave-js-server:latest
+$ docker run -d -p 3000:3000 --name=zjs -v zjs-storage:/cache --env-file=.env --device "/dev/serial/by-id/usb-0658_0200-if00:/dev/zwave" ghcr.io/kpine/zwave-js-server:latest
 ```
 
 ### Run with a bind mount
 
 ```shell
 # starts the server and uses a local folder as the persisent cache directory
-$ docker run -d -p 3000:3000 --name=zjs -v "$PWD/cache:/cache" --env-file=.env --device "/dev/serial/by-id/usb-0658_0200-if00:/dev/zwave" kpine/zwave-js-server:latest
+$ docker run -d -p 3000:3000 --name=zjs -v "$PWD/cache:/cache" --env-file=.env --device "/dev/serial/by-id/usb-0658_0200-if00:/dev/zwave" ghcr.io/kpine/zwave-js-server:latest
 ```
 
 ### Docker Compose
@@ -45,7 +45,7 @@ Example of a minimal `docker-compose.yaml` file:
 services:
   zjs:
     container_name: zjs
-    image: kpine/zwave-js-server:latest
+    image: ghcr.io/kpine/zwave-js-server:latest
     restart: unless-stopped
     environment:
       S2_ACCESS_CONTROL_KEY: "7764841BC794A54442E324682A550CEF"
@@ -101,6 +101,18 @@ At a minimum, the S0 (Legacy) network key is required, otherwise the zwave-js-se
 ### USB Path
 
 Instead of using the `USB_PATH` environment variable, map the USB controller device path to the container's default of `/dev/zwave`.
+
+### Controller Firmware Updates (OTW)
+
+The [`@zwave-js/flash`](https://www.npmjs.com/package/@zwave-js/flash) command line utility is included in the Docker image to support Over-The-Wire (OTW) firmware updates of controllers. Download the appropriate firmware file for your controller and issue the flash command. Be sure to stop any running Z-Wave JS server before doing so.
+
+```shell
+docker run --rm -it -v "$PWD/fw:/fw" --device "/dev/ttyUSB0:/dev/zwave" ghcr.io/kpine/zwave-js-server:latest flash /fw/fw.gbl
+```
+
+The command expects the device path to be `/dev/zwave` by default, or whatever environment variable `USB_PATH` is set to.
+
+See the [wiki page](https://github.com/kpine/zwave-js-server-docker/wiki/700-series-Controller-Firmware-Updates-(Linux)) for more information.
 
 ### User Device Configuration Files
 

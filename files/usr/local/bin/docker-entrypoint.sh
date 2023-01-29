@@ -25,6 +25,9 @@ elif [ "$1" = "server" ]; then
 elif [ "$1" = "client" ]; then
   shift
   set -- zwave-client "$@"
+elif [ "$1" = "flash" ]; then
+  shift
+  set -- flash "${USB_PATH}" "$@"
 fi
 
 exec "$@"

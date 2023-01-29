@@ -1,7 +1,0 @@
-#!/bin/sh
-if [ ! -c "${USB_PATH}" ]; then
-  echo "USB path \"${USB_PATH}\" does not exist or is not a valid serial device"
-  exit 1
-fi
-
-minicom -D "${USB_PATH}" -S /app/scripts/zwave-bootloader zwave
