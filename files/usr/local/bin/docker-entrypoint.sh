@@ -25,15 +25,6 @@ elif [ "$1" = "server" ]; then
 elif [ "$1" = "client" ]; then
   shift
   set -- zwave-client "$@"
-elif [ "$1" = "flash" ]; then
-  if [ ! -c "${USB_PATH}" ]; then
-    echo "USB path \"${USB_PATH}\" does not exist or is not a valid serial device"
-    exit 1
-  fi
-
-  shift
-  set -- flash "${USB_PATH}" "$@"
-  echo "Flashing controller firmware:" "$@"
 fi
 
 exec "$@"
