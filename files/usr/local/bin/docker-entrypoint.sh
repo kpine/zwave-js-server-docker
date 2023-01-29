@@ -28,9 +28,6 @@ elif [ "$1" = "client" ]; then
 elif [ "$1" = "flash" ]; then
   shift
   set -- flash "${USB_PATH}" "$@"
-elif [ "$1" = "bootloader" ]; then
-  shift
-  set -- bootloader
 fi
 
 exec "$@"
