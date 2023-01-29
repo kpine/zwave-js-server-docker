@@ -65,6 +65,8 @@ docker:
         /logs
 
   RUN apk add --no-cache --repository=https://dl-cdn.alpinelinux.org/alpine/edge/testing \
+        picocom \
+        lrzsz \
         tini
 
   ARG EARTHLY_GIT_SHORT_HASH
