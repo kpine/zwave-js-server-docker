@@ -25,6 +25,9 @@ elif [ "$1" = "server" ]; then
 elif [ "$1" = "client" ]; then
   shift
   set -- zwave-client "$@"
+elif [ "$1" = "bootloader" ]; then
+  shift
+  set -- bootloader
 fi
 
 exec "$@"
