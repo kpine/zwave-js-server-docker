@@ -26,3 +26,4 @@ sleep 1
 printf '\r' >"${USB_PATH}"
 
 picocom --quiet --noinit --noreset --send-cmd="lsx -vv" --receive-cmd="" "${USB_PATH}"
+printf '\nBye!\n'
