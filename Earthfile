@@ -64,6 +64,9 @@ docker:
         /cache/db \
         /logs
 
+  RUN apk add --no-cache --repository=https://dl-cdn.alpinelinux.org/alpine/edge/testing \
+        tini
+
   ARG EARTHLY_GIT_SHORT_HASH
   ARG VERSION="$ZWAVE_JS_SERVER_VERSION-$ZWAVE_JS_VERSION"
   ARG BUILD_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
@@ -85,7 +88,7 @@ docker:
 
   VOLUME /cache
   EXPOSE 3000
-  ENTRYPOINT ["docker-entrypoint.sh"]
+  ENTRYPOINT ["/sbin/tini", "--", "docker-entrypoint.sh"]
 
 docker-test:
   FROM +docker
