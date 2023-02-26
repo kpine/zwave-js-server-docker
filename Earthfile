@@ -2,9 +2,6 @@ VERSION 0.7
 
 FROM alpine:3.16
 
-ARG --required ZWAVE_JS_VERSION
-ARG --required ZWAVE_JS_SERVER_VERSION
-
 WORKDIR /app
 
 RUN apk add --no-cache \
@@ -24,7 +21,7 @@ test:
     --platform=linux/arm64 \
     +docker-test
 
-build:
+build-deps:
   RUN apk add --no-cache \
         g++ \
         git \
@@ -38,6 +35,11 @@ build:
         fetch-retry-mintimeout 100000 \
         fetch-retry-maxtimeout 600000
 
+build:
+  FROM +build-deps
+
+  ARG --required ZWAVE_JS_VERSION
+  ARG --required ZWAVE_JS_SERVER_VERSION
   ARG ZWAVE_JS_PACKAGE=zwave-js@$ZWAVE_JS_VERSION
   ARG ZWAVE_JS_SERVER_PACKAGE=@zwave-js/server@$ZWAVE_JS_SERVER_VERSION
   ARG ZWAVE_JS_FLASH_PACKAGE=@zwave-js/flash@$ZWAVE_JS_VERSION
@@ -56,6 +58,8 @@ build:
   SAVE ARTIFACT /app
 
 docker:
+  ARG --required ZWAVE_JS_VERSION
+  ARG --required ZWAVE_JS_SERVER_VERSION
   COPY +build/app .
   COPY --dir files/* /
 
@@ -102,6 +106,8 @@ docker-test:
   SAVE IMAGE --push $REGISTRY/$REPOSITORY:rc
 
 docker-release:
+  ARG --required ZWAVE_JS_VERSION
+  ARG --required ZWAVE_JS_SERVER_VERSION
   FROM +docker
   ARG TAG_EXTRA=1
   ARG EARTHLY_GIT_SHORT_HASH
