@@ -1,6 +1,11 @@
-name: Build and Push Test Images
+name: Build and Release Images
 
 on:
+  push:
+    branches:
+      - main
+    paths:
+      - .arg
   workflow_dispatch:
     inputs:
       build-target:
@@ -24,7 +29,7 @@ on:
       push:
         description: Push image to registries
         required: true
-        default: true
+        default: false
         type: boolean
 
 jobs:
@@ -56,13 +61,27 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Set workflow dispatch environment
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          zjsver=${{ github.event.inputs.zwave-js-version }}
+          zjssver=${{ github.event.inputs.zwave-js-server-version }}
+          npmflags=${{ github.event.inputs.npm-install-flags }}
+          printf 'EARTHLY_BUILD_ARGS="ZWAVE_JS_VERSION=%s,ZWAVE_JS_SERVER_VERSION=%s,NPM_INSTALL_EXTRA_FLAGS=%s"\n' "${zjsver}" "${zjssver}" "${npmflags}" >> $GITHUB_ENV
+          printf 'target=%s\n' "${{ github.event.inputs.build-target }}" >> $GITHUB_ENV
+
+      - name: Set release environment
+        if: github.event_name == 'push'
+        run: |
+          printf 'target=+all\n' >> $GITHUB_ENV
+
       - name: Build Images
-        run: earthly --ci ${{ github.event.inputs.build-target }} --ZWAVE_JS_VERSION=${{ github.event.inputs.zwave-js-version }} --ZWAVE_JS_SERVER_VERSION=${{ github.event.inputs.zwave-js-server-version }} --NPM_INSTALL_EXTRA_FLAGS=${{ github.event.inputs.npm-install-flags }}
+        run: earthly --ci ${{ env.target }}
 
       - name: Push to Docker Hub
-        if: github.event.inputs.push == 'true'
-        run: earthly --ci --push ${{ github.event.inputs.build-target }} --ZWAVE_JS_VERSION=${{ github.event.inputs.zwave-js-version }} --ZWAVE_JS_SERVER_VERSION=${{ github.event.inputs.zwave-js-server-version }} --NPM_INSTALL_EXTRA_FLAGS=${{ github.event.inputs.npm-install-flags }}
+        if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.event.inputs.push == 'true')
+        run: earthly --ci --push ${{ env.target }}
 
       - name: Push to GitHub Container Registry
-        if: github.event.inputs.push == 'true'
-        run: earthly --ci --push ${{ github.event.inputs.build-target }} --REGISTRY=ghcr.io --ZWAVE_JS_VERSION=${{ github.event.inputs.zwave-js-version }} --ZWAVE_JS_SERVER_VERSION=${{ github.event.inputs.zwave-js-server-version }} --NPM_INSTALL_EXTRA_FLAGS=${{ github.event.inputs.npm-install-flags }}
+        if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.event.inputs.push == 'true')
+        run: earthly --ci --push ${{ env.target }} --REGISTRY=ghcr.io
