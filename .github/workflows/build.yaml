@@ -67,8 +67,8 @@ jobs:
           zjsver=${{ github.event.inputs.zwave-js-version }}
           zjssver=${{ github.event.inputs.zwave-js-server-version }}
           npmflags=${{ github.event.inputs.npm-install-flags }}
-          printf 'EARTHLY_BUILD_ARGS="ZWAVE_JS_VERSION=%s,ZWAVE_JS_SERVER_VERSION=%s,NPM_INSTALL_EXTRA_FLAGS=%s"\n' "${zjsver}" "${zjssver}" "${npmflags}" >> $GITHUB_ENV
-          printf 'target=%s\n' "${{ github.event.inputs.build-target }}" >> $GITHUB_ENV
+          printf "EARTHLY_BUILD_ARGS='ZWAVE_JS_VERSION=%s,ZWAVE_JS_SERVER_VERSION=%s,NPM_INSTALL_EXTRA_FLAGS=%s'\n" "${zjsver}" "${zjssver}" "${npmflags}" >> "${GITHUB_ENV}"
+          printf "target=%s\n" "${{ github.event.inputs.build-target }}" >> "${GITHUB_ENV}"
 
       - name: Set release environment
         if: github.event_name == 'push'
