@@ -125,7 +125,9 @@ Use the `/cache/config` directory to easily test new device configuration files 
 
 ### Serial Soft-Reset
 
-Z-Wave JS performs a soft-reset (restart) of the Z-Wave controller during startup, and during certain operations such as NVM backups and restores. The soft-reset can result in a USB disconnect for some Z-Wave controllers, which may cause problems with certain container runtimes or host configurations. If you observe that Z-Wave JS has trouble finding the USB device, you may try opting out of this functionality by setting the `ZWAVEJS_DISABLE_SOFT_RESET` environment variable, or setting the `enableSoftReset` driver option to `false`. For more details, see the [`softReset`](https://zwave-js.github.io/node-zwave-js/#/api/driver?id=softreset) documentation.
+Z-Wave JS performs a soft-reset (restart) of the Z-Wave controller during startup, and during certain operations such as NVM backups and restores. The soft-reset can result in a USB disconnect for some Z-Wave controllers, which may cause problems with certain container runtimes or host configurations. If you observe that Z-Wave JS has trouble finding the USB device, you may try opting out of this functionality by setting the `ZWAVEJS_DISABLE_SOFT_RESET` environment variable, or setting the `softReset` driver feature option to `false`. For more details, see the [`softReset`](https://zwave-js.github.io/node-zwave-js/#/api/driver?id=softreset) and [`ZWaveOptions`](https://zwave-js.github.io/node-zwave-js/#/api/driver?id=zwaveoptions) documentation.
+
+If you continue to have issues even after disabling soft-reset, you may also need to disable the unresponsive controller recovery feature. You can opt out of this functionality by setting the `ZWAVEJS_DISABLE_UNRESPONSIVE_CONTROLLER_RECOVERY` environment variable, or setting the `unresponsiveControllerRecovery` driver feature option to `false`. For more details, see the [`ZWaveOptions`](https://zwave-js.github.io/node-zwave-js/#/api/driver?id=zwaveoptions) documentation.
 
 ### Cache Lock Files
 
