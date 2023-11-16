@@ -77,7 +77,7 @@ docker:
 
   ENV BUILD_VERSION="$VERSION-$EARTHLY_GIT_SHORT_HASH"
   ENV ENABLE_DNS_SD=false
-  ENV LOGFILENAME=/logs/zwave_%DATE%.log
+  ENV LOGFILENAME=/logs/zwavejs
   ENV NODE_ENV=production
   ENV PATH=/app/node_modules/.bin:$PATH
   ENV USB_PATH=/dev/zwave

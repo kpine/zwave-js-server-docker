@@ -63,7 +63,8 @@ services:
 ### Environment variables
 
 - `LOGTOFILE`: Set this to `true` to [configure](https://zwave-js.github.io/node-zwave-js/#/api/driver?id=logconfig) the driver to log to a file.
-- `LOGFILENAME`: Set this to [configure](https://zwave-js.github.io/node-zwave-js/#/api/driver?id=logconfig) the driver log filename (only used when `LOGTOFILE` is `true`). The default is `/logs/zwave_%DATE%.log`. Note that the driver will automatically rotate the log files using a date based scheme.
+- `LOGFILENAME`: Set this to [configure](https://zwave-js.github.io/node-zwave-js/#/api/driver?id=logconfig) the driver log filename (only used when `LOGTOFILE` is `true`). The default is `/logs/zwavejs`, which results in files named `zwavejs_%DATE%.log`. Note that the driver will automatically rotate the log files using the date based scheme.
+- `LOGMAXFILES`: Set this to [configure](https://zwave-js.github.io/node-zwave-js/#/api/driver?id=logconfig) the maximum number of log files to keep. Z-Wave JS rotates log files once a day, so this corresponds to the number of days of log files to keep.
 - `LOGLEVEL`: Set this to [configure](https://zwave-js.github.io/node-zwave-js/#/api/driver?id=logconfig) the driver log level.
 - `S2_ACCESS_CONTROL_KEY`: The network key for the S2 Access Control security class.
 - `S2_AUTHENTICATED_KEY`: The network key for the S2 Authenticated security class.
