@@ -7,6 +7,10 @@ function getLogConfig() {
     config.filename = process.env.LOGFILENAME;
   }
 
+  if (process.env.LOGMAXFILES) {
+    config.maxFiles = process.env.LOGMAXFILES;
+  }
+
   return config;
 }
 
