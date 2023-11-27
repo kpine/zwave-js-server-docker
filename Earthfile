@@ -1,11 +1,12 @@
 VERSION 0.7
 
-FROM alpine:3.17
+FROM alpine:3.18
 
 WORKDIR /app
 
 RUN apk add --no-cache \
-      nodejs
+      nodejs=18.18.2-r0 \
+      tzdata
 
 all:
   BUILD \
@@ -47,6 +48,7 @@ build:
 
   # Prebuilt binaries for node serialport and Alpine are broken, so we
   # rebuild from source:
+  #   https://github.com/serialport/bindings-cpp/issues/139
   #   https://github.com/serialport/node-serialport/issues/2438
   RUN npm install \
         $NPM_INSTALL_EXTRA_FLAGS \
