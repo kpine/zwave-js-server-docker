@@ -1,11 +1,10 @@
 VERSION 0.7
 
-FROM debian:12-slim
+FROM node:20-slim
 
 WORKDIR /app
 
-RUN apt-get update && apt-get upgrade -y && apt-get install -y \
-      nodejs
+RUN apt-get update && apt-get upgrade -y
 
 all:
   BUILD \
@@ -22,8 +21,6 @@ test:
     +docker-test
 
 build:
-  RUN apt-get install -y \
-        npm
   RUN npm config set \
         fetch-retries 5 \
         fetch-retry-mintimeout 100000 \
