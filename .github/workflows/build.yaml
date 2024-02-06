@@ -59,7 +59,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@4
 
       - name: Set workflow dispatch environment
         if: github.event_name == 'workflow_dispatch'
