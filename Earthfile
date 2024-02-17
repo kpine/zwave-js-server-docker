@@ -5,7 +5,7 @@ FROM alpine:3.18
 WORKDIR /app
 
 RUN apk add --no-cache \
-      nodejs=18.18.2-r0 \
+      nodejs=18.19.1-r0 \
       tzdata
 
 all:
