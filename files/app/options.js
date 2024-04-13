@@ -68,6 +68,15 @@ function getApiKeys() {
   return { firmwareUpdateService: fw_key };
 }
 
+function getRFSettings() {
+  const rf = { region: process.env.RF_REGION };
+  if (!rf.region) {
+    return undefined;
+  }
+
+  return rf;
+}
+
 module.exports = {
   logConfig: getLogConfig(),
   storage: {
@@ -78,4 +87,5 @@ module.exports = {
   securityKeysLongRange: getLongRangeSecurityKeys(),
   apiKeys: getApiKeys(),
   userAgent: { "kpine/zwave-js-server": process.env.BUILD_VERSION || "unknown" },
+  rf: getRFSettings(),
 };

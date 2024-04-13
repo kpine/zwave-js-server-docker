@@ -18,6 +18,7 @@ S2_UNAUTHENTICATED_KEY=2FAB1A27E19AE9C7CC6D18ACEB90C357
 S0_LEGACY_KEY=17DFB0C1BED4CABFF54E4B5375E257B3
 LR_S2_ACCESS_CONTROL_KEY=61BEF779F9DF0827CD9870B719D074BB
 LR_S2_AUTHENTICATED_KEY=905B869063266296AE5159EEDBEE038D
+RF_REGION=USA (Long Range)
 ```
 
 ### Run with a volume mount
@@ -56,6 +57,7 @@ services:
       - "S0_LEGACY_KEY=17DFB0C1BED4CABFF54E4B5375E257B3"
       - "LR_S2_ACCESS_CONTROL_KEY=61BEF779F9DF0827CD9870B719D074BB"
       - "LR_S2_AUTHENTICATED_KEY=905B869063266296AE5159EEDBEE038D"
+      - "RF_REGION=USA (Long Range)"
     devices:
       - "/dev/serial/by-id/usb-0658_0200-if00:/dev/zwave"
     volumes:
@@ -76,6 +78,7 @@ services:
 - `S0_LEGACY_KEY`: The network key for the S0 (Legacy) security class.
 - `LR_S2_ACCESS_CONTROL_KEY`: The network key for the Long Range S2 Access Control security class.
 - `LR_S2_AUTHENTICATED_KEY`: The network key for the Long Range S2 Authenticated security class.
+- `RF_REGION`: The [RF region](https://github.com/zwave-js/node-zwave-js/blob/0c2e03ea57490f1b361f600b32d595b25f26c1a6/packages/core/src/capabilities/RFRegion.ts#L2-L14) the radio should be tuned to. If set, the driver will ensure the region is set to the specified value. The default is unset, which means the controller will keep its current region setting.
 - `USB_PATH`: The device path of the Z-Wave USB controller. Defaults to `/dev/zwave`. Use of this variable is unnecessary if the controller device path is mapped from the host as `/dev/zwave`.
 - `FIRMWARE_UPDATE_API_KEY`: The API key used to access the Z-Wave JS Firmware Update Service. By default, no key is configured. Usually it is not necessary to configure this, unless you are a commercial user. See the [Firmware Update API Key](#firmware-update-api-key) section for details.
 - `ENABLE_DNS_SD`: Set this to `true` to enable DNS Service Discovery. The default is disabled. Enabling this only works if you are using host networking.
