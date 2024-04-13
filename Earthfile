@@ -1,11 +1,11 @@
-VERSION 0.7
+VERSION 0.8
 
 FROM alpine:3.18
 
 WORKDIR /app
 
 RUN apk add --no-cache \
-      nodejs=18.19.1-r0 \
+      nodejs=18.20.1-r0 \
       tzdata
 
 all:
