@@ -36,6 +36,22 @@ function getSecurityKeys() {
   return keys;
 }
 
+function getLongRangeSecurityKeys() {
+  const env_keys = {
+    S2_AccessControl: process.env.LR_S2_ACCESS_CONTROL_KEY,
+    S2_Authenticated: process.env.LR_S2_AUTHENTICATED_KEY,
+  };
+
+  let keys = {};
+  for (const [name, key] of Object.entries(env_keys)) {
+    if (key) {
+      keys[name] = key;
+    }
+  }
+
+  return keys;
+}
+
 function getApiKeys() {
   let fw_key = process.env.FIRMWARE_UPDATE_API_KEY;
 
@@ -59,6 +75,7 @@ module.exports = {
     deviceConfigPriorityDir: "/cache/config",
   },
   securityKeys: getSecurityKeys(),
+  securityKeysLongRange: getLongRangeSecurityKeys(),
   apiKeys: getApiKeys(),
   userAgent: { "kpine/zwave-js-server": process.env.BUILD_VERSION || "unknown" },
 };
