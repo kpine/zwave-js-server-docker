@@ -1,3 +1,5 @@
+const safe = require('zwave-js/safe')
+
 function getLogConfig() {
   let config = {
     forceConsole: true,
@@ -69,12 +71,11 @@ function getApiKeys() {
 }
 
 function getRFSettings() {
-  const rf = { region: process.env.RF_REGION };
-  if (!rf.region) {
+  if (!process.env.RF_REGION) {
     return undefined;
   }
 
-  return rf;
+  return { region: safe.RFRegion[process.env.RF_REGION] };
 }
 
 module.exports = {
