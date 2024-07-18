@@ -10,7 +10,7 @@ on:
     inputs:
       build-target:
         description: Build Target
-        required: true
+        required: false
         default: "+test"
         type: choice
         options:
@@ -18,10 +18,12 @@ on:
           - "+all"
       zwave-js-version:
         description: Z-Wave JS version
-        required: true
+        required: false
+        type: string
       zwave-js-server-version:
         description: Z-Wave JS Server version
-        required: true
+        required: false
+        type: string
       npm-install-flags:
         description: Extra `npm install` flags
         required: false
@@ -40,7 +42,7 @@ jobs:
       packages: write
     steps:
       - name: Install earthly
-        uses: earthly/actions-setup@v1.0.9
+        uses: earthly/actions-setup@v1
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
