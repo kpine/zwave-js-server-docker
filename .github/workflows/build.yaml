@@ -19,11 +19,11 @@ on:
       zwave-js-version:
         description: Z-Wave JS version
         required: false
-        type: string
+        default: "latest"
       zwave-js-server-version:
         description: Z-Wave JS Server version
         required: false
-        type: string
+        default: "latest"
       npm-install-flags:
         description: Extra `npm install` flags
         required: false
