@@ -6,6 +6,8 @@ on:
       - main
     paths:
       - .arg
+  pull_request:
+    types: [opened, synchronize, reopened]
   workflow_dispatch:
     inputs:
       build-target:
@@ -72,6 +74,11 @@ jobs:
           printf 'EARTHLY_BUILD_ARGS=ZWAVE_JS_VERSION=%s,ZWAVE_JS_SERVER_VERSION=%s,NPM_INSTALL_EXTRA_FLAGS=%s\n' "${zjsver}" "${zjssver}" "${npmflags}" >> "${GITHUB_ENV}"
           printf 'target=%s\n' "${{ github.event.inputs.build-target }}" >> "${GITHUB_ENV}"
 
+      - name: Set PR environment
+        if: github.event_name == 'pull_request'
+        run: |
+          printf 'target=+test\n' >> $GITHUB_ENV
+
       - name: Set release environment
         if: github.event_name == 'push'
         run: |
@@ -85,5 +92,5 @@ jobs:
         run: earthly --ci --push ${{ env.target }}
 
       - name: Push to GitHub Container Registry
-        if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.event.inputs.push == 'true')
+        if: github.event_name == 'push' || github.event_name == 'pull_request' || (github.event_name == 'workflow_dispatch' && github.event.inputs.push == 'true')
         run: earthly --ci --push ${{ env.target }} --REGISTRY=ghcr.io
