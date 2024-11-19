@@ -34,7 +34,8 @@ build-deps:
   RUN npm config set \
         fetch-retries 5 \
         fetch-retry-mintimeout 100000 \
-        fetch-retry-maxtimeout 600000
+        fetch-retry-maxtimeout 600000 \
+        loglevel verbose
 
 build:
   FROM +build-deps
