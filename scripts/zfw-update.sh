@@ -10,7 +10,7 @@ dev_path=${ZFWU_DEVICE_PATH:-${DEFAULT_DEV_PATH}}
 fw_dir=${ZFWU_FW_DIR:-${DEFAULT_FW_DIR}}
 
 function usage {
-  cat << EOF >&2
+  cat <<EOF >&2
 USAGE:
     $(basename "$0") [-d DEVICE_PATH] [-f FW_DIR]
 
@@ -20,7 +20,7 @@ EOF
 }
 
 function help {
-  cat << EOF >&2
+  cat <<EOF >&2
 $(basename "$0")
 Update Z-Wave controller firmware (700-series or later)
 
@@ -35,7 +35,7 @@ OPTIONS:
                         with environment variable ZFWU_FW_DIR.
                         [default: ${DEFAULT_FW_DIR}]
 EOF
-  exit 1
+  exit 0
 }
 
 function error {
@@ -57,27 +57,26 @@ function error_usage {
 
 while getopts :d:f:h arg; do
   case ${arg} in
-    h)
-      help
-      exit 0
-      ;;
-    d)
-      dev_path="${OPTARG}"
-      ;;
-    f)
-      fw_dir="${OPTARG}"
-      ;;
-    :)
-      error_usage "missing value for option -${OPTARG}"
-      ;;
-    ?)
-      error_usage "invalid option: -${OPTARG}"
-      ;;
+  h)
+    help
+    ;;
+  d)
+    dev_path="${OPTARG}"
+    ;;
+  f)
+    fw_dir="${OPTARG}"
+    ;;
+  :)
+    error_usage "missing value for option -${OPTARG}"
+    ;;
+  ?)
+    error_usage "invalid option: -${OPTARG}"
+    ;;
   esac
 done
 
 # If this is the HAOS SSH & Web Terminal add-on, install the software
-if [[ ${HOSTNAME} == "a0d7b954-ssh" ]] && command -v apk &> /dev/null; then
+if [[ ${HOSTNAME} == "a0d7b954-ssh" ]] && command -v apk &>/dev/null; then
   ! command -v minicom &>/dev/null && apk add minicom --no-cache --quiet --no-progress
   ! command -v lsx &>/dev/null && apk add lrzsz --no-cache --quiet --no-progress --repository=https://dl-cdn.alpinelinux.org/alpine/edge/testing
 fi
@@ -88,7 +87,7 @@ fi
 SX_BIN=
 for x in sx lsx; do
   ! sx_bin=$(command -v "${x}") && continue
-  ! grep -q 'sx.*lrzsz' <(${sx_bin} --version 2> /dev/null) && continue
+  ! grep -q 'sx.*lrzsz' <(${sx_bin} --version 2>/dev/null) && continue
   SX_BIN="${sx_bin}"
   break
 done
@@ -100,7 +99,7 @@ done
 [[ ! -w "${dev_path}" || ! -r "${dev_path}" ]] && error_usage "No permission to read from or write to the serial device."
 [[ ! -d "${fw_dir}" ]] && error_usage "Firmware directory ${fw_dir} is not valid"
 
-cat << EOF > ~/.minirc.zwave
+cat <<EOF >~/.minirc.zwave
 # Machine-generated file - use "minicom -s" to change parameters.
 pu pname1           YUNYY
 pu pname2           YUNYY
@@ -120,7 +119,8 @@ pu stopbits         1
 pu rtscts           No
 EOF
 
-zwave_runscript=$(cat <<EOF
+zwave_runscript=$(
+  cat <<EOF
 print Activating the controller's bootloader. It will appear in about 10 seconds...
 send "\1\3\0\10\364"
 sleep 1
