@@ -43,16 +43,11 @@ build:
   ARG ZWAVE_JS_FLASH_PACKAGE=@zwave-js/flash@$ZWAVE_JS_VERSION
   ARG NPM_INSTALL_EXTRA_FLAGS
 
-  # Prebuilt binaries for node serialport and Alpine are broken, so we
-  # rebuild from source:
-  #   https://github.com/serialport/bindings-cpp/issues/139
-  #   https://github.com/serialport/node-serialport/issues/2438
   RUN npm install \
         $NPM_INSTALL_EXTRA_FLAGS \
         $ZWAVE_JS_SERVER_PACKAGE \
         $ZWAVE_JS_FLASH_PACKAGE \
-        $ZWAVE_JS_PACKAGE \
-    && npm rebuild --prefer-offline --build-from-source @serialport/bindings-cpp
+        $ZWAVE_JS_PACKAGE
 
   SAVE ARTIFACT /app
 
