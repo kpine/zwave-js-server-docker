@@ -24,12 +24,7 @@ test:
 
 build:
   RUN apk add --no-cache \
-        g++ \
-        git \
-        linux-headers \
-        make \
-        npm \
-        python3
+        npm
 
   RUN npm config set \
         fetch-retries 5 \
