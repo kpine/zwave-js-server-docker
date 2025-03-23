@@ -1,11 +1,11 @@
 VERSION 0.8
 
-FROM alpine:3.18
+FROM alpine:3.21
 
 WORKDIR /app
 
 RUN apk add --no-cache \
-      nodejs=18.20.1-r0 \
+      nodejs=22.13.1-r0 \
       tzdata
 
 all:
@@ -24,12 +24,7 @@ test:
 
 build:
   RUN apk add --no-cache \
-        g++ \
-        git \
-        linux-headers \
-        make \
-        npm \
-        python3
+        npm
 
   RUN npm config set \
         fetch-retries 5 \
@@ -43,16 +38,11 @@ build:
   ARG ZWAVE_JS_FLASH_PACKAGE=@zwave-js/flash@$ZWAVE_JS_VERSION
   ARG NPM_INSTALL_EXTRA_FLAGS
 
-  # Prebuilt binaries for node serialport and Alpine are broken, so we
-  # rebuild from source:
-  #   https://github.com/serialport/bindings-cpp/issues/139
-  #   https://github.com/serialport/node-serialport/issues/2438
   RUN npm install \
         $NPM_INSTALL_EXTRA_FLAGS \
         $ZWAVE_JS_SERVER_PACKAGE \
         $ZWAVE_JS_FLASH_PACKAGE \
-        $ZWAVE_JS_PACKAGE \
-    && npm rebuild --prefer-offline --build-from-source @serialport/bindings-cpp
+        $ZWAVE_JS_PACKAGE
 
   SAVE ARTIFACT /app
 
