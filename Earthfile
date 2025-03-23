@@ -22,7 +22,7 @@ test:
     --platform=linux/arm64 \
     +docker-test
 
-build-deps:
+build:
   RUN apk add --no-cache \
         g++ \
         git \
@@ -35,9 +35,6 @@ build-deps:
         fetch-retries 5 \
         fetch-retry-mintimeout 100000 \
         fetch-retry-maxtimeout 600000
-
-build:
-  FROM +build-deps
 
   ARG --required ZWAVE_JS_VERSION
   ARG --required ZWAVE_JS_SERVER_VERSION
