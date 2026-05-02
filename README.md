@@ -79,7 +79,7 @@ services:
 - `LR_S2_ACCESS_CONTROL_KEY`: The network key for the Long Range S2 Access Control security class.
 - `LR_S2_AUTHENTICATED_KEY`: The network key for the Long Range S2 Authenticated security class.
 - `RF_REGION`: The [RF region](https://github.com/zwave-js/node-zwave-js/blob/0c2e03ea57490f1b361f600b32d595b25f26c1a6/packages/core/src/capabilities/RFRegion.ts#L2-L14) the radio should be tuned to. If set, the driver will ensure the region is set to the specified value. The default is unset, which means the controller will keep its current region setting.
-- `USB_PATH`: The device path of the Z-Wave USB controller. Defaults to `/dev/zwave`. Use of this variable is unnecessary if the controller device path is mapped from the host as `/dev/zwave`.
+- `USB_PATH`: The device path of the Z-Wave USB controller. Defaults to `/dev/zwave`. Use of this variable is unnecessary if the controller device path is mapped from the host as `/dev/zwave`. This can also be a URI for remote controller, either [`tcp://`](https://zwave-js.github.io/zwave-js/#/usage/tcp-connection?id=remote-serial-port-over-tcp) (serial port over TCP) or [`esphome://`](https://github.com/zwave-js/zwave-js/blob/6c574c54fa283201dde1ea52f81e922243e98d55/docs/usage/esphome-connection.md) (ESPHome Z-Wave Proxy).
 - `FIRMWARE_UPDATE_API_KEY`: The API key used to access the Z-Wave JS Firmware Update Service. By default, no key is configured. Usually it is not necessary to configure this, unless you are a commercial user. See the [Firmware Update API Key](#firmware-update-api-key) section for details.
 - `ENABLE_DNS_SD`: Set this to `true` to enable DNS Service Discovery. The default is disabled. Enabling this only works if you are using host networking.
 

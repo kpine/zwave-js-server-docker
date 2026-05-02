@@ -2,11 +2,6 @@
 set -e
 
 if [ -z "$1" ]; then
-  if [ ! -c "${USB_PATH}" ]; then
-    echo "USB path \"${USB_PATH}\" does not exist or is not a valid serial device"
-    exit 1
-  fi
-
   if [ -n "${NETWORK_KEY}" ]; then
     echo "NETWORK_KEY has been removed, use S0_LEGACY_KEY instead"
     exit 1
