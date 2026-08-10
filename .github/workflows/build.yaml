@@ -43,27 +43,31 @@ jobs:
       contents: read
       packages: write
     steps:
-      - name: Install earthly
-        uses: earthly/actions-setup@43211c7a0eae5344d6d79fb4aaf209c8f8866203 # v1.0.13
+      - name: Install earthbuild
+        uses: EarthBuild/actions-setup@f4d20223e70dbb43b5fc08c4d857ab9cf0dbf3ae # v2.2.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@ce360397dd3f832beb865e1373c09c0e9f86d70a # v4.0.0
+        uses: docker/setup-qemu-action@96fe6ef7f33517b61c61be40b68a1882f3264fb8 # v4.2.0
 
       - name: Login to Docker Hub
-        uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121 # v4.1.0
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121 # v4.1.0
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Checkout repository
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Set workflow dispatch environment
         if: github.event_name == 'workflow_dispatch'
@@ -85,12 +89,12 @@ jobs:
           printf 'target=+all\n' >> $GITHUB_ENV
 
       - name: Build Images
-        run: earthly --ci ${{ env.target }}
+        run: earth --ci ${{ env.target }}
 
       - name: Push to Docker Hub
         if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.event.inputs.push == 'true')
-        run: earthly --ci --push ${{ env.target }}
+        run: earth --ci --push ${{ env.target }}
 
       - name: Push to GitHub Container Registry
         if: github.event_name == 'push' || github.event_name == 'pull_request' || (github.event_name == 'workflow_dispatch' && github.event.inputs.push == 'true')
-        run: earthly --ci --push ${{ env.target }} --REGISTRY=ghcr.io
+        run: earth --ci --push ${{ env.target }} --REGISTRY=ghcr.io
