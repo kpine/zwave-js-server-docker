@@ -60,11 +60,11 @@ docker:
   RUN apk add --no-cache \
         tini
 
-  ARG EARTHLY_GIT_SHORT_HASH
+  ARG EARTH_GIT_SHORT_HASH
   ARG VERSION="$ZWAVE_JS_SERVER_VERSION-$ZWAVE_JS_VERSION"
   ARG BUILD_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
-  ENV BUILD_VERSION="$VERSION-$EARTHLY_GIT_SHORT_HASH"
+  ENV BUILD_VERSION="$VERSION-$EARTH_GIT_SHORT_HASH"
   ENV ENABLE_DNS_SD=false
   ENV LOGFILENAME=/logs/zwavejs
   ENV NODE_ENV=production
@@ -74,7 +74,7 @@ docker:
 
   LABEL org.opencontainers.image.created=$BUILD_DATE
   LABEL org.opencontainers.image.description="A standalone Z-Wave JS Server"
-  LABEL org.opencontainers.image.revision=$EARTHLY_GIT_SHORT_HASH
+  LABEL org.opencontainers.image.revision=$EARTH_GIT_SHORT_HASH
   LABEL org.opencontainers.image.source="https://github.com/kpine/zwave-js-server-docker"
   LABEL org.opencontainers.image.title="Z-Wave JS Server"
   LABEL org.opencontainers.image.version=$VERSION
@@ -86,11 +86,11 @@ docker:
 docker-test:
   FROM +docker
   ARG TAG_EXTRA=1
-  ARG EARTHLY_GIT_SHORT_HASH
+  ARG EARTH_GIT_SHORT_HASH
   ARG REGISTRY=docker.io
   ARG REPOSITORY=kpine/zwave-js-server
   IF [ "$TAG_EXTRA" = "1" ]
-    SAVE IMAGE --push $REGISTRY/$REPOSITORY:rc-$EARTHLY_GIT_SHORT_HASH
+    SAVE IMAGE --push $REGISTRY/$REPOSITORY:rc-$EARTH_GIT_SHORT_HASH
   END
   SAVE IMAGE --push $REGISTRY/$REPOSITORY:rc
 
@@ -99,12 +99,12 @@ docker-release:
   ARG --required ZWAVE_JS_SERVER_VERSION
   FROM +docker
   ARG TAG_EXTRA=1
-  ARG EARTHLY_GIT_SHORT_HASH
+  ARG EARTH_GIT_SHORT_HASH
   ARG TAG="$ZWAVE_JS_SERVER_VERSION-$ZWAVE_JS_VERSION"
   ARG REGISTRY=docker.io
   ARG REPOSITORY=kpine/zwave-js-server
   IF [ "$TAG_EXTRA" = "1" ]
-    SAVE IMAGE --push $REGISTRY/$REPOSITORY:$TAG-$EARTHLY_GIT_SHORT_HASH
+    SAVE IMAGE --push $REGISTRY/$REPOSITORY:$TAG-$EARTH_GIT_SHORT_HASH
   END
   SAVE IMAGE --push $REGISTRY/$REPOSITORY:$TAG
   SAVE IMAGE --push $REGISTRY/$REPOSITORY:latest
