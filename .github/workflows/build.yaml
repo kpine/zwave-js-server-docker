@@ -71,22 +71,24 @@ jobs:
 
       - name: Set workflow dispatch environment
         if: github.event_name == 'workflow_dispatch'
+        env:
+          ZJS_VER: ${{ inputs.zwave-js-version }}
+          ZJSS_VER: ${{ inputs.zwave-js-server-version }}
+          NPM_FLAGS: ${{ inputs.npm-install-flags }}
+          BUILD_TARGET: ${{ inputs.build-target }}
         run: |
-          zjsver=${{ github.event.inputs.zwave-js-version }}
-          zjssver=${{ github.event.inputs.zwave-js-server-version }}
-          npmflags=${{ github.event.inputs.npm-install-flags }}
-          printf 'EARTHLY_BUILD_ARGS=ZWAVE_JS_VERSION=%s,ZWAVE_JS_SERVER_VERSION=%s,NPM_INSTALL_EXTRA_FLAGS=%s\n' "${zjsver}" "${zjssver}" "${npmflags}" >> "${GITHUB_ENV}"
-          printf 'target=%s\n' "${{ github.event.inputs.build-target }}" >> "${GITHUB_ENV}"
+          printf 'EARTHLY_BUILD_ARGS=ZWAVE_JS_VERSION=%s,ZWAVE_JS_SERVER_VERSION=%s,NPM_INSTALL_EXTRA_FLAGS=%s\n' "${ZJS_VER}" "${ZJSS_VER}" "${NPM_FLAGS}" >> "${GITHUB_ENV}"
+          printf 'target=%s\n' "${BUILD_TARGET}" >> "${GITHUB_ENV}"
 
       - name: Set PR environment
         if: github.event_name == 'pull_request'
         run: |
-          printf 'target=+test\n' >> $GITHUB_ENV
+          printf 'target=+test\n' >> "${GITHUB_ENV}"
 
       - name: Set release environment
         if: github.event_name == 'push'
         run: |
-          printf 'target=+all\n' >> $GITHUB_ENV
+          printf 'target=+all\n' >> "${GITHUB_ENV}"
 
       - name: Build Images
         run: earth --ci ${{ env.target }}
