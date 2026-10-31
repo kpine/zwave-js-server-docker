@@ -19,18 +19,6 @@ on:
         options:
           - "+test"
           - "+all"
-      zwave-js-version:
-        description: Z-Wave JS version (blank uses package-lock.json)
-        required: false
-        default: ""
-      zwave-js-server-version:
-        description: Z-Wave JS Server version (blank uses package-lock.json)
-        required: false
-        default: ""
-      npm-install-flags:
-        description: Extra `npm install` flags
-        required: false
-        type: string
       push:
         description: Push image to registries
         required: true
@@ -77,12 +65,8 @@ jobs:
       - name: Set workflow dispatch environment
         if: github.event_name == 'workflow_dispatch'
         env:
-          ZJS_VER: ${{ inputs.zwave-js-version }}
-          ZJSS_VER: ${{ inputs.zwave-js-server-version }}
-          NPM_FLAGS: ${{ inputs.npm-install-flags }}
           BUILD_TARGET: ${{ inputs.build-target }}
         run: |
-          printf 'EARTHLY_BUILD_ARGS=ZWAVE_JS_VERSION=%s,ZWAVE_JS_SERVER_VERSION=%s,NPM_INSTALL_EXTRA_FLAGS=%s\n' "${ZJS_VER}" "${ZJSS_VER}" "${NPM_FLAGS}" >> "${GITHUB_ENV}"
           printf 'target=%s\n' "${BUILD_TARGET}" >> "${GITHUB_ENV}"
 
       - name: Set PR environment

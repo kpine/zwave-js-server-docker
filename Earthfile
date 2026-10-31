@@ -35,22 +35,7 @@ build:
 
   COPY package.json package-lock.json ./
 
-  ARG NPM_INSTALL_EXTRA_FLAGS
-  RUN npm ci --omit=dev $NPM_INSTALL_EXTRA_FLAGS
-
-  # Optional overrides of the locked versions (e.g. "latest" for test builds)
-  ARG ZWAVE_JS_VERSION
-  ARG ZWAVE_JS_SERVER_VERSION
-  RUN specs=""; \
-      if [ -n "$ZWAVE_JS_VERSION" ]; then \
-        specs="$specs zwave-js@$ZWAVE_JS_VERSION @zwave-js/flash@$ZWAVE_JS_VERSION"; \
-      fi; \
-      if [ -n "$ZWAVE_JS_SERVER_VERSION" ]; then \
-        specs="$specs @zwave-js/server@$ZWAVE_JS_SERVER_VERSION"; \
-      fi; \
-      if [ -n "$specs" ]; then \
-        npm install --omit=dev $NPM_INSTALL_EXTRA_FLAGS $specs; \
-      fi
+  RUN npm ci --omit=dev
 
   SAVE ARTIFACT /app
 
