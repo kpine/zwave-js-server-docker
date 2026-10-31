@@ -4,10 +4,8 @@ FROM alpine:3.22
 
 WORKDIR /app
 
-# renovate: datasource=repology depName=alpine_3_22/nodejs versioning=loose
-ARG NODEJS_VERSION=22.23.2-r0
 RUN apk add --no-cache \
-      nodejs=$NODEJS_VERSION \
+      nodejs \
       tzdata
 
 all:

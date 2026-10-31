@@ -21,17 +21,6 @@
       ],
       "datasourceTemplate": "docker",
       "autoReplaceStringTemplate": "FROM {{depName}}:{{newValue}}{{#if newDigest}}@{{newDigest}}{{/if}}"
-    },
-    {
-      "customType": "regex",
-      "description": "Earthfile ARGs annotated with a renovate comment",
-      "managerFilePatterns": [
-        "/(^|/)Earthfile$/"
-      ],
-      "matchStrings": [
-        "# renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)( versioning=(?<versioning>\\S+))?\\s+ARG [A-Z0-9_]+=(?<currentValue>\\S+)"
-      ],
-      "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver-coerced{{/if}}"
     }
   ],
   "packageRules": [
@@ -75,22 +64,6 @@
         "pinDigest"
       ],
       "groupName": "GitHub Actions"
-    },
-    {
-      "description": "Alpine minor bumps change the release branch: update the alpine_3_XX/nodejs depName in the Earthfile in the same PR",
-      "matchDatasources": [
-        "docker"
-      ],
-      "matchPackageNames": [
-        "alpine"
-      ],
-      "matchUpdateTypes": [
-        "major",
-        "minor"
-      ],
-      "prBodyNotes": [
-        "⚠️ Update the `alpine_3_XX/nodejs` renovate comment and `NODEJS_VERSION` in the Earthfile to match the new Alpine branch."
-      ]
     }
   ]
 }
