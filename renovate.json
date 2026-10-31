@@ -1,27 +1,21 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:best-practices"],
+  "extends": [
+    "config:best-practices"
+  ],
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": [
+      "before 6am on the first day of the month"
+    ]
+  },
   "customManagers": [
     {
       "customType": "regex",
-      "description": "Z-Wave JS version in .arg",
-      "managerFilePatterns": ["/^\\.arg$/"],
-      "matchStrings": ["ZWAVE_JS_VERSION=(?<currentValue>\\S+)"],
-      "depNameTemplate": "zwave-js",
-      "datasourceTemplate": "npm"
-    },
-    {
-      "customType": "regex",
-      "description": "Z-Wave JS Server version in .arg",
-      "managerFilePatterns": ["/^\\.arg$/"],
-      "matchStrings": ["ZWAVE_JS_SERVER_VERSION=(?<currentValue>\\S+)"],
-      "depNameTemplate": "@zwave-js/server",
-      "datasourceTemplate": "npm"
-    },
-    {
-      "customType": "regex",
       "description": "Earthfile base images",
-      "managerFilePatterns": ["/(^|/)Earthfile$/"],
+      "managerFilePatterns": [
+        "/(^|/)Earthfile$/"
+      ],
       "matchStrings": [
         "FROM (?<depName>[a-z0-9][a-z0-9._/-]*):(?<currentValue>[\\w.-]+)(?:@(?<currentDigest>sha256:[a-f0-9]+))?"
       ],
@@ -31,7 +25,9 @@
     {
       "customType": "regex",
       "description": "Earthfile ARGs annotated with a renovate comment",
-      "managerFilePatterns": ["/(^|/)Earthfile$/"],
+      "managerFilePatterns": [
+        "/(^|/)Earthfile$/"
+      ],
       "matchStrings": [
         "# renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)( versioning=(?<versioning>\\S+))?\\s+ARG [A-Z0-9_]+=(?<currentValue>\\S+)"
       ],
@@ -40,31 +36,61 @@
   ],
   "packageRules": [
     {
-      "description": "Group Z-Wave JS updates; minor/patch automerge and trigger a release",
-      "matchPackageNames": ["zwave-js", "@zwave-js/server"],
+      "description": "Group Z-Wave JS packages; zwave-js and @zwave-js/flash must stay on the same version",
+      "matchPackageNames": [
+        "zwave-js",
+        "@zwave-js/flash",
+        "@zwave-js/server"
+      ],
       "groupName": "Z-Wave JS"
     },
     {
-      "matchPackageNames": ["zwave-js", "@zwave-js/server"],
-      "matchUpdateTypes": ["minor", "patch"],
+      "description": "Automerge minor/patch Z-Wave JS updates; merging to main triggers a release",
+      "matchPackageNames": [
+        "zwave-js",
+        "@zwave-js/flash",
+        "@zwave-js/server"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
       "automerge": true,
       "automergeType": "pr"
     },
     {
-      "matchManagers": ["github-actions"],
+      "matchManagers": [
+        "github-actions"
+      ],
       "minimumReleaseAge": "14 days"
     },
     {
-      "matchManagers": ["github-actions"],
-      "matchUpdateTypes": ["minor", "patch", "digest", "pinDigest"],
+      "matchManagers": [
+        "github-actions"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "digest",
+        "pinDigest"
+      ],
       "groupName": "GitHub Actions"
     },
     {
       "description": "Alpine minor bumps change the release branch: update the alpine_3_XX/nodejs depName in the Earthfile in the same PR",
-      "matchDatasources": ["docker"],
-      "matchPackageNames": ["alpine"],
-      "matchUpdateTypes": ["major", "minor"],
-      "prBodyNotes": ["⚠️ Update the `alpine_3_XX/nodejs` renovate comment and `NODEJS_VERSION` in the Earthfile to match the new Alpine branch."]
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchPackageNames": [
+        "alpine"
+      ],
+      "matchUpdateTypes": [
+        "major",
+        "minor"
+      ],
+      "prBodyNotes": [
+        "⚠️ Update the `alpine_3_XX/nodejs` renovate comment and `NODEJS_VERSION` in the Earthfile to match the new Alpine branch."
+      ]
     }
   ]
 }

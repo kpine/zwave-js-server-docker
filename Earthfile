@@ -33,24 +33,28 @@ build:
         fetch-retry-mintimeout 100000 \
         fetch-retry-maxtimeout 600000
 
-  ARG --required ZWAVE_JS_VERSION
-  ARG --required ZWAVE_JS_SERVER_VERSION
-  ARG ZWAVE_JS_PACKAGE=zwave-js@$ZWAVE_JS_VERSION
-  ARG ZWAVE_JS_SERVER_PACKAGE=@zwave-js/server@$ZWAVE_JS_SERVER_VERSION
-  ARG ZWAVE_JS_FLASH_PACKAGE=@zwave-js/flash@$ZWAVE_JS_VERSION
-  ARG NPM_INSTALL_EXTRA_FLAGS
+  COPY package.json package-lock.json ./
 
-  RUN npm install \
-        $NPM_INSTALL_EXTRA_FLAGS \
-        $ZWAVE_JS_SERVER_PACKAGE \
-        $ZWAVE_JS_FLASH_PACKAGE \
-        $ZWAVE_JS_PACKAGE
+  ARG NPM_INSTALL_EXTRA_FLAGS
+  RUN npm ci --omit=dev $NPM_INSTALL_EXTRA_FLAGS
+
+  # Optional overrides of the locked versions (e.g. "latest" for test builds)
+  ARG ZWAVE_JS_VERSION
+  ARG ZWAVE_JS_SERVER_VERSION
+  RUN specs=""; \
+      if [ -n "$ZWAVE_JS_VERSION" ]; then \
+        specs="$specs zwave-js@$ZWAVE_JS_VERSION @zwave-js/flash@$ZWAVE_JS_VERSION"; \
+      fi; \
+      if [ -n "$ZWAVE_JS_SERVER_VERSION" ]; then \
+        specs="$specs @zwave-js/server@$ZWAVE_JS_SERVER_VERSION"; \
+      fi; \
+      if [ -n "$specs" ]; then \
+        npm install --omit=dev $NPM_INSTALL_EXTRA_FLAGS $specs; \
+      fi
 
   SAVE ARTIFACT /app
 
 docker:
-  ARG --required ZWAVE_JS_VERSION
-  ARG --required ZWAVE_JS_SERVER_VERSION
   COPY +build/app .
   COPY --dir files/* /
 
@@ -63,7 +67,8 @@ docker:
         tini
 
   ARG EARTH_GIT_SHORT_HASH
-  ARG VERSION="$ZWAVE_JS_SERVER_VERSION-$ZWAVE_JS_VERSION"
+  # <server version>-<zwave-js version>, read from the installed packages
+  ARG VERSION=$(node --print "['@zwave-js/server', 'zwave-js'].map((p) => require('/app/node_modules/' + p + '/package.json').version).join('-')")
   ARG BUILD_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
   ENV BUILD_VERSION="$VERSION-$EARTH_GIT_SHORT_HASH"
@@ -97,12 +102,10 @@ docker-test:
   SAVE IMAGE --push $REGISTRY/$REPOSITORY:rc
 
 docker-release:
-  ARG --required ZWAVE_JS_VERSION
-  ARG --required ZWAVE_JS_SERVER_VERSION
   FROM +docker
   ARG TAG_EXTRA=1
   ARG EARTH_GIT_SHORT_HASH
-  ARG TAG="$ZWAVE_JS_SERVER_VERSION-$ZWAVE_JS_VERSION"
+  ARG TAG=$(node --print "['@zwave-js/server', 'zwave-js'].map((p) => require('/app/node_modules/' + p + '/package.json').version).join('-')")
   ARG REGISTRY=docker.io
   ARG REPOSITORY=kpine/zwave-js-server
   IF [ "$TAG_EXTRA" = "1" ]

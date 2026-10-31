@@ -5,7 +5,8 @@ on:
     branches:
       - main
     paths:
-      - .arg
+      - package.json
+      - package-lock.json
   pull_request:
     types: [opened, synchronize, reopened]
   workflow_dispatch:
@@ -19,13 +20,13 @@ on:
           - "+test"
           - "+all"
       zwave-js-version:
-        description: Z-Wave JS version
+        description: Z-Wave JS version (blank uses package-lock.json)
         required: false
-        default: "latest"
+        default: ""
       zwave-js-server-version:
-        description: Z-Wave JS Server version
+        description: Z-Wave JS Server version (blank uses package-lock.json)
         required: false
-        default: "latest"
+        default: ""
       npm-install-flags:
         description: Extra `npm install` flags
         required: false
