@@ -31,9 +31,10 @@ build:
         fetch-retry-mintimeout 100000 \
         fetch-retry-maxtimeout 600000
 
-  COPY package.json package-lock.json ./
+  COPY package.json .npmrc ./
 
-  RUN npm ci --omit=dev
+  # No lockfile: transitive dependencies resolve fresh on every build
+  RUN npm install --omit=dev
 
   SAVE ARTIFACT /app
 

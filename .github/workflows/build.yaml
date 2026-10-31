@@ -6,7 +6,6 @@ on:
       - main
     paths:
       - package.json
-      - package-lock.json
   pull_request:
     types: [opened, synchronize, reopened]
   workflow_dispatch:

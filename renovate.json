@@ -3,12 +3,6 @@
   "extends": [
     "config:best-practices"
   ],
-  "lockFileMaintenance": {
-    "enabled": true,
-    "schedule": [
-      "before 6am on the first day of the month"
-    ]
-  },
   "customManagers": [
     {
       "customType": "regex",
