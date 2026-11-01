@@ -11,10 +11,9 @@
         "/(^|/)Earthfile$/"
       ],
       "matchStrings": [
-        "FROM (?<depName>[a-z0-9][a-z0-9._/-]*):(?<currentValue>[\\w.-]+)(?:@(?<currentDigest>sha256:[a-f0-9]+))?"
+        "FROM (?<depName>[a-z0-9][a-z0-9._/-]*):(?<currentValue>[\\w.-]+)"
       ],
-      "datasourceTemplate": "docker",
-      "autoReplaceStringTemplate": "FROM {{depName}}:{{newValue}}{{#if newDigest}}@{{newDigest}}{{/if}}"
+      "datasourceTemplate": "docker"
     }
   ],
   "packageRules": [
@@ -45,19 +44,18 @@
       "matchManagers": [
         "github-actions"
       ],
-      "minimumReleaseAge": "14 days"
+      "minimumReleaseAge": "14 days",
+      "groupName": "GitHub Actions"
     },
     {
+      "description": "Track Earthfile base image tags only, without digest pinning",
       "matchManagers": [
-        "github-actions"
+        "custom.regex"
       ],
-      "matchUpdateTypes": [
-        "minor",
-        "patch",
-        "digest",
-        "pinDigest"
+      "matchDatasources": [
+        "docker"
       ],
-      "groupName": "GitHub Actions"
+      "pinDigests": false
     }
   ]
 }
