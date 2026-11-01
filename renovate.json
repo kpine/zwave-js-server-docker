@@ -1,0 +1,63 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:best-practices"
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Earthfile base images",
+      "managerFilePatterns": [
+        "/(^|/)Earthfile$/"
+      ],
+      "matchStrings": [
+        "FROM (?<depName>[a-z0-9][a-z0-9._/-]*):(?<currentValue>[\\w.-]+)(?:@(?<currentDigest>sha256:[a-f0-9]+))?"
+      ],
+      "datasourceTemplate": "docker",
+      "autoReplaceStringTemplate": "FROM {{depName}}:{{newValue}}{{#if newDigest}}@{{newDigest}}{{/if}}"
+    }
+  ],
+  "packageRules": [
+    {
+      "description": "Group Z-Wave JS packages; zwave-js and @zwave-js/flash must stay on the same version",
+      "matchPackageNames": [
+        "zwave-js",
+        "@zwave-js/flash",
+        "@zwave-js/server"
+      ],
+      "groupName": "Z-Wave JS"
+    },
+    {
+      "description": "Automerge minor/patch Z-Wave JS updates; merging to main triggers a release",
+      "matchPackageNames": [
+        "zwave-js",
+        "@zwave-js/flash",
+        "@zwave-js/server"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "automerge": true,
+      "automergeType": "pr"
+    },
+    {
+      "matchManagers": [
+        "github-actions"
+      ],
+      "minimumReleaseAge": "14 days"
+    },
+    {
+      "matchManagers": [
+        "github-actions"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "digest",
+        "pinDigest"
+      ],
+      "groupName": "GitHub Actions"
+    }
+  ]
+}
