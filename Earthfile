@@ -1,6 +1,6 @@
 VERSION 0.8
 
-FROM alpine:3.22
+FROM alpine:3.24
 
 WORKDIR /app
 
