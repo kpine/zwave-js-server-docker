@@ -3,8 +3,8 @@
   "private": true,
   "description": "Runtime dependencies installed into the zwave-js-server image",
   "dependencies": {
-    "@zwave-js/flash": "15.32.1",
+    "@zwave-js/flash": "15.32.2",
     "@zwave-js/server": "3.11.0",
-    "zwave-js": "15.32.1"
+    "zwave-js": "15.32.2"
   }
 }
